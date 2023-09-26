@@ -1,0 +1,5 @@
+
+# Authorizes the key to all clients.
+- name: Set authorized key in /etc
+  authorized_key:
+    

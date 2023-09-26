@@ -1,4 +1,0 @@
-# Copia uma chave ssh para todos os clientes.
-- name: authorize key sourced from file
-  authorized-key:
-    
