@@ -1,0 +1,8 @@
+# Configuração do NFS
+- name: install nfs-utils
+  community.general.pacman:
+    name: nfs-utils
+
+- name: enable and start relevant services
+  systemd:
+    name: 
