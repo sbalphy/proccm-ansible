@@ -1,0 +1,44 @@
+- name: Configurar cliente DHCP
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/systemd/network/wired.network
+    owner: root
+    group: root
+    mode: "0000" #qual permissao real pra isso?
+    # clients usually only have one real interface,
+    # by checking if it starts with "e" we ensure that loopback (lo)
+    # and wirelles interfaces (start with w) wont be selected
+    content: |-
+      [Match]
+       Name={{ interface for interface in ansible_facts.interfaces if interface[0]==e }}
+       
+       [Network]
+       DHCP=ipv4
+
+- name: Start e enable service systemd-networkd
+  ansible.builtin.service:
+    name: systemd-networkd
+    state: started
+    enabled: true
+
+- name: Start e enable service systemd-resolved
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: started
+    enabled: true
+
+- name: Create a symbolic link
+  ansible.builtin.file:
+    src: /run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    state: link
+    force: true
+# OBS:por um bug do systemd-resolved,
+# a opção search não é puxada para o resolv.conf.
+# Mesmo se definirmos ela manualmente, ela não funciona.
+# Isso significa que não poderemos dar "ping cliente",
+# apenas "ping cliente.proccm.redealuno.usp.br".
+# Achamos que vale a pena ficar com esse bug por enquanto por causa das vantagens
+# do systemd-networkd, mas buscaremos resolvê-lo.
