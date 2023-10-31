@@ -1,0 +1,6 @@
+fazer playbook client_install
+setar credentials pro root no archinstall usando algo como vault do ansible (tomar muito cuidado com seguranca aqui)
+
+testar se arch install se comporta como esperado
+testar se swap ta dando ruim  ou n
+testar se rola configurar cliente ponta a ponta e 'hot swap pcs'

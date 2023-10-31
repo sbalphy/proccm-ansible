@@ -1,0 +1,61 @@
+{
+    "additional-repositories": [],
+    "archinstall-language": "English",
+    "audio_config": {
+        "audio": "pulseaudio"
+    },
+    "bootloader": "Grub",
+    "config_version": "2.6.3",
+    "custom-commands": [
+        "git clone https://github.com/alan-barzilay/proccm-ansible.git  /tmp",
+        "ansible-playbook tmp/proccm-ansible/playbooks/client_config.yaml "
+    ],
+    "debug": false,
+    "hostname": "archlinux",
+    "kernels": [
+        "linux"
+    ],
+    "locale_config": {
+        "kb_layout": "br-abnt2",
+        "sys_enc": "UTF-8",
+        "sys_lang": "en_US"
+    },
+    "mirror_config": {
+        "custom_mirrors": [],
+        "mirror_regions": {
+            "Brazil": [
+                "https://mirror.ufscar.br/archlinux/$repo/os/$arch",
+                "http://mirror.ufscar.br/archlinux/$repo/os/$arch",
+                "http://mirror.ufam.edu.br/archlinux/$repo/os/$arch",
+                "http://linorg.usp.br/archlinux/$repo/os/$arch",
+                "http://archlinux.c3sl.ufpr.br/$repo/os/$arch"
+            ]
+        }
+    },
+    "network_config": {},
+    "no_pkg_lookups": false,
+    "ntp": true,
+    "offline": false,
+    "packages": [
+        "ansible"
+    ],
+    "parallel downloads": 5,
+    "profile_config": {
+        "gfx_driver": "All open-source",
+        "greeter": "sddm",
+        "profile": {
+            "custom_settings": {
+                "Kde": {}
+            },
+            "details": [
+                "Kde"
+            ],
+            "main": "Desktop"
+        }
+    },
+    "script": "guided",
+    "silent": false,
+    "swap": false,
+    "timezone": "America/Sao_Paulo",
+    "version": "2.6.3"
+}
