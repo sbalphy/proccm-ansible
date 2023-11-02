@@ -11,9 +11,9 @@
     state: started
     enabled: yes
   loop:
-    - 'rpcbind.service'
-    - 'nfs-client.target'
-    - 'remote-fs.target'
+    - "rpcbind.service"
+    - "nfs-client.target"
+    - "remote-fs.target"
 
 # Garantimos que os serviços só iniciarão depois que for feita a conexão com o proccm
 - name: enable wait-online service
@@ -24,7 +24,6 @@
     - systemd-networkd.service
     - systemd-networkd-wait-online.service
 
-
 - name: replace service files
   copy:
     src: "files/{{ item }}"
@@ -33,8 +32,9 @@
     group: root
     mode: 0644
   loop:
-    - 'nfs-client.target'
-    - 'rpcbind.service'
+    - "nfs-client.target"
+    - "rpcbind.service"
+    -
 
 - name: make systemd reread configs
   systemd:
@@ -58,7 +58,7 @@
   community.general.pacman:
     name: openldap
 
-# Transferência do certificado 
+# Transferência do certificado
 - name: copy certificate
   copy:
     src: /etc/ssl/certs/cacert.pem
@@ -101,22 +101,7 @@
     group: root
     mode: 0644
   loop:
-    - 'system-auth'
-    - 'su'
-    - 'su-l'
-    - 'passwd'
-
-## Configuração da interface gráfica
-
-# Instalação dos drivers de vídeo e do Xorg
-- name: install video drivers and xorg
-  community.general.pacman:
-    name:
-      - mesa
-      - lib32-mesa
-      - libva-intel-driver
-      - xorg-server
-      - xf86-video-intel
-
-# Configuração do layout do teclado
-
+    - "system-auth"
+    - "su"
+    - "su-l"
+    - "passwd"

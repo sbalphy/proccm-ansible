@@ -7,7 +7,7 @@
 - name: Run archinstall with our client settings
   become: true
   changed_when: true
-  ansible.builtin.command: "archinstall --config {{url_config}} --creds {{credentials}} --silent"
+  ansible.builtin.command: "archinstall --config {{ url_config }} --creds {{ credentials }} --silent"
   vars:
     url: "<url_aqui>"
     credetentials: "<algo_aqui>"

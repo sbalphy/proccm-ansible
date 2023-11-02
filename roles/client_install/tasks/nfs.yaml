@@ -1,0 +1,80 @@
+- name: Instalar nfs-utils
+  become: true
+  community.general.pacman:
+    state: present
+    name:
+      - nfs-utils
+
+- name: Startar e habilitar servicos relacionados ao nfs
+  become: true
+  block:
+    - name: Start & enable relevant NFS services
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - "rpcbind.service"
+        - "nfs-client.target"
+        - "remote-fs.target"
+
+    - name: Garantir conexão ao PROCCM antes de tentarmos montar as partições NFS
+      ansible.builtin.service:
+        name: "{{ item }}"
+        enabled: true
+      loop:
+        - systemd-networkd.service
+        - systemd-networkd-wait-online.service
+
+- name: Impedir o sistema de tentar montar as partições antes de se conectar
+  become: true
+  community.general.ini_file:
+    path: "/etc/systemd/system/{{ item }}"
+    section: Unit
+    option: After
+    value: network-online.target
+    owner: root
+    group: root
+    mode: "0644"
+    loop:
+      - rpcbind.service
+      - nfs-client.target
+
+- name: Make systemd reread configs
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Copiar nfs mountpoint configs para o fstab para definir a montagem automática
+  ansible.builtin.blockinfile:
+    path: /etc/fstab
+    owner: root
+    group: root
+    mode: "0644"
+    block: |
+      # /home
+      192.168.0.127:/home	   /home	nfs	vers=3,x-systemd.automount,x-systemd.device-timeout=10,tcp,wsize=16384,rsize=16384     0 0
+
+      # /var/games
+      192.168.0.127:/var/games  /var/games	nfs	vers=3,bg,x-systemd.automount,x-systemd.device-timeout=10,tcp,wsize=16384,rsize=16384  0 0
+
+      # /scripts
+      192.168.0.127:/scripts	   /scripts	nfs	vers=3,bg,x-systemd.automount,x-systemd.device-timeout=10,tcp,wsize=16384,rsize=16384  0 0
+
+- name: Tornar /scripts facilmente acessiveis p/ tods ao adicionar ao path
+  ansible.builtin.lineinfile:
+    path: /etc/bash.bashrc
+    line: export PATH=$PATH:/scripts
+    state: present
+
+# Desde a versão 228 do pacote systemd,
+# a montagem dos diretórios por nfs não é mais feita automaticamente,
+# então deve-se editar o arquivo /usr/lib/tmpfiles.d/home.conf
+- name: Fazer systemd montar diretorios nfs automaticamente
+  ansible.builtin.blockinfile:
+    path: /usr/lib/tmpfiles.d/home.conf
+    owner: root
+    group: root
+    mode: "0644"
+    block: |
+      v /home 0755 - - -
+      v /srv 0755 - - -

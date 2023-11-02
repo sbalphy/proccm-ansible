@@ -4,28 +4,26 @@
     dest: /etc/systemd/network/wired.network
     owner: root
     group: root
-    mode: "0000" #qual permissao real pra isso?
+    mode: "0000" # todo: qual permissao real pra isso?
     # clients usually only have one real interface,
     # by checking if it starts with "e" we ensure that loopback (lo)
     # and wirelles interfaces (start with w) wont be selected
+    # TODO: consertar esse filtro pq pelo jeito precisa usar filtros e n python, ops
     content: |-
       [Match]
-       Name={{ interface for interface in ansible_facts.interfaces if interface[0]==e }}
-       
-       [Network]
-       DHCP=ipv4
+      Name={{ interface for interface in ansible_facts.interfaces if interface[0]==e }}
 
-- name: Start e enable service systemd-networkd
+      [Network]
+      DHCP=ipv4
+
+- name: Start & enable service systemd-networkd & systemd-resolved
   ansible.builtin.service:
-    name: systemd-networkd
+    name: "{{ item }}"
     state: started
     enabled: true
-
-- name: Start e enable service systemd-resolved
-  ansible.builtin.service:
-    name: systemd-resolved
-    state: started
-    enabled: true
+    loop:
+      - systemd-networkd
+      - systemd-resolved
 
 - name: Create a symbolic link
   ansible.builtin.file:

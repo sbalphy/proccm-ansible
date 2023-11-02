@@ -1,0 +1,80 @@
+#todo, ver como fazer um become file wide mas q o linter n reclame por n detectar junto dos become_user
+
+- name: Instalar utilitarios
+  become: true
+  block:
+    - name: Install cli utilities
+      community.general.pacman:
+        state: present
+        name:
+          - bash-completion
+          - ntfs-3g # opcional, para acessar partições NTFS (que são padrão no Windows)
+          - net-tools
+          - zsh # shell favorita do alan barzilay
+          - unrar
+          - wget
+          - mlocate
+          - tree
+          - emacs
+          - neovim
+          - figlet # para o script proccmfetch funcionar
+          - tldr
+          - htop
+
+    # pq n tem java do yoshi aqui, todo: ver isso
+    - name: Install Computação Científica
+      community.general.pacman:
+        state: present
+        name:
+          - python-matplotlib
+          - python-scipy
+          - python-numpy
+          - python-sympy
+          - python-pandas
+          - python-scikit-learn
+          - jupyter-notebook
+          - r
+          - tk
+          - julia
+          - octave
+          - gnuplot
+          - gdb
+          - valgrind
+
+    - name: Instalar editores de texto, img, etc
+      community.general.pacman:
+        state: present
+        name:
+          - gimp
+          - inkscape
+          - texlive-most
+          - vlc
+          - libreoffice-still
+          - libreoffice-still-pt-br
+
+    - name: Instalar pacote mais importante de todos
+      community.general.pacman:
+        state: present
+        name:
+          - armagetronad
+
+- name: Instalar fontes
+  block:
+    - name: Fontes pacman
+      become: true
+      community.general.pacman:
+        state: present
+        name:
+          - noto-fonts-cjk
+          - noto-fonts-emoji
+          - noto-fonts
+          - ttf-jetbrains-mono-nerd # pelo menos uma font mono nerd & boa
+
+    - name: Fontes yay
+      become: true
+      become_user: aur_builder
+      kewlfft.aur.aur:
+        state: present
+        use: yay
+        name:
+          - ttf-ms-fonts

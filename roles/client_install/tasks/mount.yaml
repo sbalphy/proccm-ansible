@@ -1,0 +1,27 @@
+# Assumindo q ele cria dirs intermediarios
+- name: Mkdirs no mnt pra dar mount
+  ansible.builtin.file:
+    path: /mnt/archinstall/scratch
+    state: directory
+    mode: "0755"
+
+# N sei se formatar sda2 eh necessario
+# N formatar sda3 pq queremos manter scratch
+- name: Format /dev/sda1 & /dev/sda2
+  become: true
+  community.general.filesystem:
+    fstype: "{{ item.fstype }}"
+    dev: "{{ item.dev }}"
+    loop:
+      - { fstype: "ext4", dev: "/dev/sda1" }
+      - { fstype: "swap", dev: "/dev/sda2" }
+
+- name: Mount sda1 (/) in /mnt/archinstall and sda3 (/scratch) in /mnt/archinstall/scratch
+  ansible.posix.mount:
+    path: /mnt/archinstall
+    src: /dev/sda1
+    fstype: ext4
+    state: mounted
+    loop:
+      - { path: "/mnt/archinstall", src: "/dev/sda1" }
+      - { path: "/mnt/archinstall/scratch", src: "/dev/sda3" }

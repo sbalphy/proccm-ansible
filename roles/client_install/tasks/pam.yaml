@@ -1,0 +1,156 @@
+- name: Instalar pacote relacionado ao PAM
+  become: true
+  community.general.pacman:
+    state: present
+    name:
+      - nss-pam-ldapd
+
+# A ordem de busca eh da esquerda pra direita, entao vai comecar pelo files e terminar no ldap
+# (files eh shadow e etc da maquina local)
+# ref relevante pra mymachines: https://www.freedesktop.org/software/systemd/man/latest/nss-mymachines.html
+- name: Edit nsswitch.conf - Adicionar LDAP na lista de lugares onde procurar info dos usuarios (passwd, group & shadow)
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: "^{{ item }}:"
+    line: "{{ item }}: files mymachines systemd ldap"
+    state: present
+    loop:
+      - passwd
+      - group
+      - shadow
+
+- name: Edit nslcd.conf - TODO
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/nslcd.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    loop:
+      - {
+          regexp: '^#?uri\s+ldap:',
+          line: "uri ldap://proccm.redealuno.usp.br:{{ porta_ldap }}",
+        }
+      - {
+          regexp: '^#?base\s+dc=',
+          line: "base dc=proccm,dc=redealuno,dc=usp,dc=br",
+        }
+      - {
+          regexp: "^#?rootpwmoddn",
+          line: "rootpwmoddn cn=admin,dc=proccm,dc=redealuno,dc=usp,dc=br",
+        }
+      - {
+          regexp: '^#?base\s+group',
+          line: "base group ou=Group,dc=proccm,dc=redealuno,dc=usp,dc=br",
+        }
+      - {
+          regexp: '^#?base\s+passwd',
+          line: "base	passwd ou=People,dc=proccm,dc=redealuno,dc=usp,dc=br",
+        }
+      - {
+          regexp: '^#?base\s+shadow',
+          line: "base shadow ou=People,dc=proccm,dc=redealuno,dc=usp,dc=br",
+        }
+      - { regexp: "^#?ssl", line: "ssl start_tls" }
+      - {
+          regexp: "^#?tls_cacertfile",
+          line: "tls_cacertfile /etc/ssl/certs/ca.cert",
+        }
+
+- name: Start & enable nslcd.service
+  become: true
+  ansible.builtin.service:
+    name: nslcd.service
+    state: started
+    enabled: true
+
+- name: TODO /etc/pam.d/system-auth
+  become: true
+  block:
+    - name: TODO
+      community.general.pamd:
+        name: system-auth
+        type: "{{ item }}"
+        control: required
+        module_path: pam_unix.so
+        new_type: "{{ item }}"
+        new_control: sufficient
+        new_module_path: pam_ldap.so
+        state: before
+        loop:
+          - auth
+          - account
+          - password
+
+    - name: TODO
+      community.general.pamd:
+        name: system-auth
+        type: session
+        control: optional
+        module_path: pam_permit.so
+        new_type: session
+        new_control: optional
+        new_module_path: pam_ldap.so
+        state: before
+
+- name: TODO /etc/pam.d/su
+  become: true
+  block:
+    - name: TODO
+      community.general.pamd:
+        name: su
+        type: "{{ item.type }}"
+        control: "{{ item.control }}"
+        module_path: "{{ item.module_path }}"
+        new_type: "{{ item.type }}"
+        new_control: sufficient
+        new_module_path: pam_ldap.so
+        state: before
+        loop:
+          - {
+              type: "auth",
+              control: "sufficient",
+              module_path: "pam_rootok.so",
+            }
+          - { type: "account", control: "required", module_path: "pam_unix.so" }
+          - { type: "session", control: "required", module_path: "pam_unix.so" }
+
+    - name: TODO
+      community.general.pamd:
+        name: su
+        type: account
+        control: sufficient
+        module_path: pam_ldap.so
+        new_type: auth
+        new_control: required
+        new_module_path: pam_unix.so
+        state: before
+
+    - name: TODO
+      community.general.pamd:
+        name: su
+        type: auth
+        control: required
+        module_path: pam_unix.so
+        module_arguments: "use_first_pass"
+        state: args_present
+
+- name: Tornar su identico ao su-l
+  ansible.builtin.copy:
+    src: /etc/pam.d/su
+    dest: /etc/pam.d/su-l
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: TODO /etc/pam.d/passwd
+  community.general.pamd:
+    name: passwd
+    type: password
+    control: required
+    module_path: pam_unix.so
+    new_type: password
+    new_control: sufficient
+    new_module_path: pam_ldap.so
+    state: before

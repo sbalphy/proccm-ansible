@@ -1,0 +1,28 @@
+- name: Instalar pacotes relacionados ao LDAP
+  become: true
+  community.general.pacman:
+    state: present
+    name:
+      - openldap
+
+- hosts: proccm
+  tasks:
+    - name: Copiar certificado cacert.pem do proccm para o pc atual
+      ansible.posix.synchronize:
+        src: /etc/ssl/certs/cacert.pem
+        dest: /etc/ssl/certs/ca.cert
+        mode: pull
+      delegate_to: localhost
+# ref: https://stackoverflow.com/a/35742157
+
+- name: TODO
+  ansible.builtin.blockinfile:
+    path: /etc/openldap/ldap.conf
+    owner: root
+    group: root
+    mode: "0644"
+    block: |
+      BASE            dc=proccm,dc=redealuno,dc=usp,dc=br
+      URI             ldap://proccm.redealuno.usp.br:{{<porta_ldap>}}
+
+      TLS_CACERT /etc/ssl/certs/ca.cert
