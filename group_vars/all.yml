@@ -1,0 +1,144 @@
+---
+# manter isso atualizado parece horrivel,
+# sepa eh melhor gerar isso a partir de alguma fonte de "verdade" autoritativa e fazer tudo sempre extrair info de la
+# sepa puxar do proccm e processar ou do inventario do ansible
+
+newton:
+  ansible_host: "192.168.0.1"
+  mac_ethernet: "18:C0:4D:F2:4A:8E"
+schrodinger:
+  ansible_host: "192.168.0.2"
+  mac_ethernet: "70:71:BC:57:E4:34"
+turing:
+  ansible_host: "192.168.0.3"
+  mac_ethernet: "70:71:BC:57:F2:19"
+feynman:
+  ansible_host: "192.168.0.4"
+  mac_ethernet: "70:71:bc:57:e4:d4"
+euler:
+  ansible_host: "192.168.0.5"
+  mac_ethernet: "70:71:BC:57:F0:0C"
+franklin:
+  ansible_host: "192.168.0.6"
+  mac_ethernet: "00:22:64:FD:AF:13"
+curie:
+  ansible_host: "192.168.0.7"
+  mac_ethernet: "00:22:4d:51:9c:fe"
+knuth:
+  ansible_host: "192.168.0.8"
+  mac_ethernet: "70:71:BC:57:E4:FC"
+einstein:
+  ansible_host: "192.168.0.9"
+  mac_ethernet: "70:71:BC:52:BA:9E"
+gauss:
+  ansible_host: "192.168.0.10"
+  mac_ethernet: "70:71:BC:64:AD:12"
+pauling:
+  ansible_host: "192.168.0.11"
+  mac_ethernet: "70:71:BC:4F:6E:0A"
+boltzmann:
+  ansible_host: "192.168.0.12"
+  mac_ethernet: "70:71:BC:57:F2:1E"
+galileu:
+  ansible_host: "192.168.0.13"
+  mac_ethernet: "70:71:BC:57:F3:04"
+fermat:
+  ansible_host: "192.168.0.14"
+  mac_ethernet: "70:71:BC:28:6C:2C"
+laplace:
+  ansible_host: "192.168.0.15"
+  mac_ethernet: "70:71:bc:64:a9:96"
+# darwin
+erdos:
+  ansible_host: "192.168.0.17"
+  mac_ethernet: "70:71:BC:57:F3:1D"
+noether:
+  ansible_host: "192.168.0.18"
+  mac_ethernet: "00:0F:EA:B5:29:53"
+lamarr:
+  ansible_host: "192.168.0.19"
+  mac_ethernet: "70:71:BC:57:F3:18"
+
+hostame2mac:
+  newton: "18:C0:4D:F2:4A:8E"
+  schrodinger: "70:71:BC:57:E4:34"
+  turing: "70:71:BC:57:F2:19"
+  feynman: "70:71:bc:57:e4:d4"
+  euler: "70:71:BC:57:F0:0C"
+  franklin: "00:22:64:FD:AF:13"
+  curie: "00:22:4d:51:9c:fe"
+  knuth: "70:71:BC:57:E4:FC"
+  einstein: "70:71:BC:52:BA:9E"
+  gauss: "70:71:BC:64:AD:12"
+  pauling: "70:71:BC:4F:6E:0A"
+  boltzmann: "70:71:BC:57:F2:1E"
+  galileu: "70:71:BC:57:F3:04"
+  fermat: "70:71:BC:28:6C:2C"
+  laplace: "70:71:bc:64:a9:96"
+  # darwin
+  erdos: "70:71:BC:57:F3:1D"
+  noether: "00:0F:EA:B5:29:53"
+  lamarr: "70:71:BC:57:F3:18"
+
+mac2hostname:
+  "18:C0:4D:F2:4A:8E": newton
+  "70:71:BC:57:E4:34": schrodinger
+  "70:71:BC:57:F2:19": turing
+  "70:71:bc:57:e4:d4": feynman
+  "70:71:BC:57:F0:0C": euler
+  "00:22:64:FD:AF:13": franklin
+  "00:22:4d:51:9c:fe": curie
+  "70:71:BC:57:E4:FC": knuth
+  "70:71:BC:52:BA:9E": einstein
+  "70:71:BC:64:AD:12": gauss
+  "70:71:BC:4F:6E:0A": pauling
+  "70:71:BC:57:F2:1E": boltzmann
+  "70:71:BC:57:F3:04": galileu
+  "70:71:BC:28:6C:2C": fermat
+  "70:71:bc:64:a9:96": laplace
+  # darwin
+  "70:71:BC:57:F3:1D": erdos
+  "00:0F:EA:B5:29:53": noether
+  "70:71:BC:57:F3:18": lamarr
+
+hostname2ip:
+  newton: "192.168.0.1"
+  schrodinger: "192.168.0.2"
+  turing: "192.168.0.3"
+  feynman: "192.168.0.4"
+  euler: "192.168.0.5"
+  franklin: "192.168.0.6"
+  curie: "192.168.0.7"
+  knuth: "192.168.0.8"
+  einstein: "192.168.0.9"
+  gauss: "192.168.0.10"
+  pauling: "192.168.0.11"
+  boltzmann: "192.168.0.12"
+  galileu: "192.168.0.13"
+  fermat: "192.168.0.14"
+  laplace: "192.168.0.15"
+  # darwin
+  erdos: "192.168.0.17"
+  noether: "192.168.0.18"
+  lamarr: "192.168.0.19"
+
+ip2hostname:
+  "192.168.0.1": newton
+  "192.168.0.2": schrodinger
+  "192.168.0.3": turing
+  "192.168.0.4": feynman
+  "192.168.0.5": euler
+  "192.168.0.6": franklin
+  "192.168.0.7": curie
+  "192.168.0.8": knuth
+  "192.168.0.9": einstein
+  "192.168.0.10": gauss
+  "192.168.0.11": pauling
+  "192.168.0.12": boltzmann
+  "192.168.0.13": galileu
+  "192.168.0.14": fermat
+  "192.168.0.15": laplace
+  # darwin
+  "192.168.0.17": erdos
+  "192.168.0.18": noether
+  "192.168.0.19": lamarr

@@ -1,9 +1,11 @@
-- hosts: proccm
-  tasks:
-    - name: Transferir root public key do proccm pra o pc atual
-      ansible.posix.synchronize:
-        src: /root/.chave_publica_rsa_proccm
-        dest: /root/.ssh/authorized_keys
-        mode: pull
-      delegate_to: localhost
-# ref: https://stackoverflow.com/a/35742157
+- name: Set authorized key for remote user
+  ansible.posix.authorized_key:
+    user: "{{ item.username }}"
+    state: present
+    key: "{{ item.pub_key }}"
+    loop:
+      - { username: barzilay, pubkey: "" }
+      # - { username: joel, pubkey: "" }
+#   key:  https://github.com/charlie.keys
+# ou algo meio
+#   key: "{{ lookup('file', '/home/charlie/.ssh/id_rsa.pub') }}"

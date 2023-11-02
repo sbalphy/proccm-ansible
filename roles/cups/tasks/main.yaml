@@ -7,12 +7,7 @@
       - libcups
       - sane
 
-- name: Start e enable service cups.service
-  ansible.builtin.service:
-    name: cups.service
-    state: started
-    enabled: true
-
+# acho q preciso add o become true e aurbuilder user
 - name: Install driver da impressora
   kewlfft.aur.aur:
     update_cache: true
@@ -21,10 +16,16 @@
     name:
       - samsung-unified-driver
 
+- name: Start e enable service cups.service
+  ansible.builtin.service:
+    name: cups.service
+    state: started
+    enabled: true
+
 ## wiki tem mais umas websteps pra impressora,
 ## n sei se faz sentido add aqui de alguma forma
 
-# Parametrizar ese IP?
+# TODO: Parametrizar esse IP pelo inventario?
 - name: Fazer impressora acessivel pela rede
   become: true
   ansible.builtin.lineinfile:

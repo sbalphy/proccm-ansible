@@ -24,11 +24,11 @@
           143.107.79.66   proccm
           143.107.90.10   fleming
 
-    # todo, vars aqui :
+      # todo, vars aqui :
     - name: Add hostname ao hosts
       ansible.builtin.lineinfile:
         path: /etc/pacman.conf
-        line: "192.168.0.{{ ip_maquina }}  {{ nome_pc }}"
+        line: "{{ hostvars[hostname][ansible_host] }}  {{ hostname }}" # 192.168.0.X     nome_da_máquina
         state: present
 
 # todo, vars aqui :
@@ -40,4 +40,4 @@
     owner: root
     group: root
     mode: "0644"
-    content: "{{ nome_pc }}"
+    content: "{{ hostname }}"

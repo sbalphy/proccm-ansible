@@ -1,14 +1,20 @@
+# Esse role assume q a tabela de particao do cliente segue a seguinte logica (caso exista):
+# sda1 /, sda2 swap, sda3 /scratch
+
+# TODO, criar algo pra checar se existe uma tabela de particao (do nosso esquema?)
+# or something e se n tiver particionar usando ansible parted usando nossos defaults
+
 - name: Fresh client install
 - hosts: localhost
   pre_tasks:
-    # Estou assumindo q ele cria dirs intermediarios
     - name: Mkdirs no mnt pra dar mount
       ansible.builtin.file:
         path: /mnt/archinstall/scratch
         state: directory
         mode: "0755"
+        recurse: true # para criar dirs intermediarios tipo mkdir -p
 
-    # N sei se formatar sda2 eh necessario
+    # N sei se formatar sda2 eh necessario ja q eh swap
     # N formatar sda3 pq queremos manter scratch
     - name: Format /dev/sda1 & /dev/sda2
       become: true
@@ -22,8 +28,8 @@
       # todo: add explicacao do pq isso funciona
     - name: Mount sda1 (/) in /mnt/archinstall and sda3 (/scratch) in /mnt/archinstall/scratch
       ansible.posix.mount:
-        path: /mnt/archinstall
-        src: /dev/sda1
+        path: "{{ item.path }}"
+        src: "{{ item.src }}"
         fstype: ext4
         state: mounted
         loop:
@@ -37,11 +43,17 @@
         name: archinstall
         state: present
 
+    # - name: Checa se eh um pc novo (novo mac address)
+    # se for, promptar pra valores novos e rodar um role de atualizar proccm (add pc novo ou alterar mac de pc velho)
+    # # todo
+
     - name: Run archinstall with our client settings
       become: true
       changed_when: true
       ansible.builtin.command: "archinstall --config {{ url_config }} --creds {{ credentials }} --silent"
       vars:
-        url: "<url_aqui>"
+        url_config: "<url_aqui>"
         credetentials: "<algo_aqui>"
-        # TODO: provavelmente transformar nisso num jinja template + logica pra inferir hostname ou proomptar o user se nao descobrir
+        mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}"
+        nome_pc: "{{ mac2hostname[mac] }}"
+        # inventory hostname vai dar algo como localhost, por isso extrair pelo mac address

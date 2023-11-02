@@ -1,0 +1,5 @@
+[Match]
+Name={{ ansible_facts.interfaces | map(regex_search('^e'), ansible_facts.interfaces)  }}
+
+[Network]
+DHCP=ipv4

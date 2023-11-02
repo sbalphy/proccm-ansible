@@ -4,7 +4,7 @@
     - name: Add Color & VerbosePkgLists to pacman.conf
       ansible.builtin.lineinfile:
         path: /etc/pacman.conf
-        regexp: "^#{{ item }}"
+        regexp: "^#?{{ item }}"
         line: "{{ item }}"
         state: present
         loop:

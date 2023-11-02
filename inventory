@@ -1,6 +1,7 @@
 localhost               ansible_host=127.0.0.1	
-impressora              ansible_host=192.168.0.100
+<!-- roteador wifi?  ansible_host=192.168.0.100 -->
 gateway                 ansible_host=143.107.79.65
+impressora              ansible_host=143.107.90.4
 
 # IPS externos
 [servidores]
@@ -27,4 +28,3 @@ laplace                 ansible_host=192.168.0.15           mac_ethernet=70:71:b
 erdos                   ansible_host=192.168.0.17           mac_ethernet=70:71:BC:57:F3:1D           
 noether                 ansible_host=192.168.0.18           mac_ethernet=00:0F:EA:B5:29:53
 lamarr                  ansible_host=192.168.0.19           mac_ethernet=70:71:BC:57:F3:18
-

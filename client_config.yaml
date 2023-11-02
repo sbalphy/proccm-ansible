@@ -8,8 +8,9 @@
     - hosts
     - install_utilities
     - ip
-    - ssh_keys
     - nfs
     - ldap
     - pam
     - cups
+    - role: ssh_keys
+      tags: cp_ssh_keys
