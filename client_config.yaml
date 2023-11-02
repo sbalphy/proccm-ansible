@@ -1,0 +1,15 @@
+- name: Config freshly installed client
+# assume q client_install.yaml ja rodou ou esta num estado equivalente
+- hosts: localhost
+  vars:
+    porta_ldap: 12421
+  roles:
+    - pacman
+    - hosts
+    - install_utilities
+    - ip
+    - ssh_keys
+    - nfs
+    - ldap
+    - pam
+    - cups

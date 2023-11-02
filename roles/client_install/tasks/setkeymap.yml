@@ -1,8 +1,0 @@
-# Configura o keymap default do cliente.
-- name: create /etc/vconsole.conf
-  copy:
-    content: "KEYMAP=br-abnt2"
-    dest: "/etc/vconsole.conf"
-    owner: root
-    group: root
-    mode: 0644
