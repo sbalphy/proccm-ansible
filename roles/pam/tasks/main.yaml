@@ -1,3 +1,8 @@
+# "NSS, as a proxy, helps find if a user name is valid(exists) or not,
+# what's the IP address of a host name and more"
+# PAM realiza autenticacao de fato do usuario
+# ref boa sobre pam e nss: https://serverfault.com/a/538503
+
 - name: Instalar pacote relacionado ao PAM
   become: true
   community.general.pacman:
@@ -5,9 +10,9 @@
     name:
       - nss-pam-ldapd
 
-# A ordem de busca eh da esquerda pra direita, entao vai comecar pelo files e terminar no ldap
-# (files eh shadow e etc da maquina local)
-# ref relevante pra mymachines: https://www.freedesktop.org/software/systemd/man/latest/nss-mymachines.html
+  # A ordem de busca eh da esquerda pra direita, entao vai comecar pelo files e terminar no ldap
+  # (files eh shadow e etc da maquina local)
+  # ref pra mymachines: https://www.freedesktop.org/software/systemd/man/latest/nss-mymachines.html
 - name: Edit nsswitch.conf - Adicionar LDAP na lista de lugares onde procurar info dos usuarios (passwd, group & shadow)
   become: true
   ansible.builtin.lineinfile:
@@ -20,7 +25,8 @@
       - group
       - shadow
 
-- name: Edit nslcd.conf - TODO
+  # arquivo default eh comentado e bem util pra entender
+- name: Configurar mapeamento entre NSS names e LDAP - /etc/nslcd.conf
   become: true
   ansible.builtin.lineinfile:
     path: /etc/nslcd.conf
@@ -65,15 +71,16 @@
     state: started
     enabled: true
 
-- name: TODO /etc/pam.d/system-auth
+  # Esse eh o servico geral do PAM, qualquer outra coisa q n tenha sua propria configuracao, vai seguir o system-auth
+- name: Configurar servico PAM para autenticar com LDAP - /etc/pam.d/system-auth
   become: true
   block:
-    - name: TODO
+    - name: Fazer com que PAM tente usar LDAP antes de autenticar com infos do sistema local
       community.general.pamd:
         name: system-auth
         type: "{{ item }}"
         control: required
-        module_path: pam_unix.so
+        module_path: pam_unix.so # autenticacao do proprio sistema, util caso ldap esteja fora do ar
         new_type: "{{ item }}"
         new_control: sufficient
         new_module_path: pam_ldap.so
@@ -83,21 +90,24 @@
           - account
           - password
 
-    - name: TODO
+      # todo: checar se essa task eh necessaria, como tamo setando pra opcional sepa q eh inutil
+      # todo2 trocar esse target de before prum after
+      # ref de q sepa tem linhas inuteis (optinal pam_permit)): https://bbs.archlinux.org/viewtopic.php?id=245892
+    - name: pam - system-auth - session (na moral n sabemo mais do q isso, ass. barzimagnopatrick)
       community.general.pamd:
         name: system-auth
         type: session
         control: optional
-        module_path: pam_permit.so
+        module_path: pam_permit.so # sempre retorna sucesso
         new_type: session
         new_control: optional
         new_module_path: pam_ldap.so
         state: before
 
-- name: TODO /etc/pam.d/su
+- name: Configurar servico PAM para trocar de usuario (su) usando LDAP - /etc/pam.d/su
   become: true
   block:
-    - name: TODO
+    - name: Fazer com que LDAP seja sempre a primeira tentativa para verificar auth account e session
       community.general.pamd:
         name: su
         type: "{{ item.type }}"
@@ -111,12 +121,12 @@
           - {
               type: "auth",
               control: "sufficient",
-              module_path: "pam_rootok.so",
+              module_path: "pam_rootok.so", # Soh retorna successo se vc for o root (UID=0)
             }
           - { type: "account", control: "required", module_path: "pam_unix.so" }
           - { type: "session", control: "required", module_path: "pam_unix.so" }
 
-    - name: TODO
+    - name: Garantir que se todo resto falhar, tentaremos validar auth com os arquivos da maquina local
       community.general.pamd:
         name: su
         type: account
@@ -127,15 +137,17 @@
         new_module_path: pam_unix.so
         state: before
 
-    - name: TODO
+    - name: Impedir sistema de proomptar usuario por senha novamente, quando possivel
       community.general.pamd:
         name: su
         type: auth
         control: required
         module_path: pam_unix.so
-        module_arguments: "use_first_pass"
+        module_arguments: "use_first_pass" # Se senha ja foi proomptada pra algo, tente usar ela antes de proomptar o usuario novamente
         state: args_present
 
+  # su-l eh comando su com flag -l
+  # Do man de su: Start the shell as a login shell with an environment similar to a real login:
 - name: Tornar su identico ao su-l
   ansible.builtin.copy:
     src: /etc/pam.d/su
@@ -144,7 +156,8 @@
     group: root
     mode: "0644"
 
-- name: TODO /etc/pam.d/passwd
+  # ref legal: https://www.techrepublic.com/article/controlling-passwords-with-pam/
+- name: Configurar servico PAM para autenticar usuario para usar passwd com LDAP - /etc/pam.d/passwd
   community.general.pamd:
     name: passwd
     type: password

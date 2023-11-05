@@ -4,14 +4,16 @@
     dest: /etc/systemd/network/wired.network
     owner: root
     group: root
-    mode: "0000" # todo: qual permissao real pra isso?
-    # clients usually only have one real interface,
-    # by checking if it starts with "e" we ensure that loopback (lo)
-    # and wirelles interfaces (start with w) wont be selected
-    # TODO: consertar esse filtro pq pelo jeito precisa usar filtros e n python, ops
+    mode: "0644"
+    # Clientes normalmente soh tem uma interface de rede cabeada (mas alguns novos parecem poder vir com wifi tb),
+    # ao ordenar as interfaces em ordem alfabetica, garantido por 'Predictable Network Interface Device Names',
+    # sempre teremos as interfaces cabeadas primeiro (en, lo, wl e ww sao as unicas opcoes validas para comeco do nome).
+    # refs:
+    # https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/networking_guide/sec-understanding_the_predictable_network_interface_device_names
+    # https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/
     content: |-
       [Match]
-      Name={{ interface for interface in ansible_facts.interfaces if interface[0]==e }}
+      Name={{ ansible_facts.interfaces.sort()[0] }}
 
       [Network]
       DHCP=ipv4
@@ -33,10 +35,3 @@
     group: root
     state: link
     force: true
-# OBS:por um bug do systemd-resolved,
-# a opção search não é puxada para o resolv.conf.
-# Mesmo se definirmos ela manualmente, ela não funciona.
-# Isso significa que não poderemos dar "ping cliente",
-# apenas "ping cliente.proccm.redealuno.usp.br".
-# Achamos que vale a pena ficar com esse bug por enquanto por causa das vantagens
-# do systemd-networkd, mas buscaremos resolvê-lo.

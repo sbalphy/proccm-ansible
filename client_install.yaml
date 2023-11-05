@@ -1,22 +1,45 @@
 # Esse role assume q a tabela de particao do cliente segue a seguinte logica (caso exista):
 # sda1 /, sda2 swap, sda3 /scratch
 
+# TODO grande ifszao pra mbr vs gpt?
+#  acho q forcar todo fressh install ser uefi, preservar a particao de  scratch e formatar o resto
+
 # TODO, criar algo pra checar se existe uma tabela de particao (do nosso esquema?)
 # or something e se n tiver particionar usando ansible parted usando nossos defaults
+# ideia de logica meio assim:
+# {"disk": {"dev": "/dev/sdb", "logical_block": 512, "model": "VMware Virtual disk", "physical_block": 512, "size": 5.0, "table": "msdos", "unit": "gib"},
+#  "partitions": [{"begin": 0.0, "end": 1.0, "flags": ["boot", "lvm"], "fstype": "", "name": "", "num": 1, "size": 1.0},
+#                 {"begin": 1.0, "end": 5.0, "flags": [], "fstype": "", "name": "", "num": 2, "size": 4.0}],
+#  "script": "unit KiB print "}
+
+#  if mbr :
+#   partitions[0]["name"] == "/""           and   partitions[0]["fstype"] == "ext4"  and
+#   partitions[1]["name"] == "swap""        and   partitions[1]["fstype"] == "swap"  and
+#   partitions[2]["name"] == "/scratch""    and   partitions[2]["fstype"] == "ext4"
+
+# elif gpt:
+#   partitions[0]["name"] == "boot""           and   partitions[0]["fstype"] == ""      and
+#   partitions[1]["name"] == "/""              and   partitions[0]["fstype"] == "ext4"  and
+#   partitions[2]["name"] == "swap""           and   partitions[1]["fstype"] == "swap"  and
+#   partitions[3]["name"] == "/scratch""       and   partitions[2]["fstype"] == "ext4"
 
 - name: Fresh client install
 - hosts: localhost
+  vars:
+    mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}"
+    nome_pc: "{{ input_name | default(mac2hostname[mac]) }}" # inventory hostname vai dar algo como localhost, por isso extrair nome pelo mac address
+
   pre_tasks:
     - name: Mkdirs no mnt pra dar mount
       ansible.builtin.file:
         path: /mnt/archinstall/scratch
         state: directory
         mode: "0755"
-        recurse: true # para criar dirs intermediarios tipo mkdir -p
+        recurse: true # para criar dirs intermediarios, tipo mkdir -p
 
     # N sei se formatar sda2 eh necessario ja q eh swap
     # N formatar sda3 pq queremos manter scratch
-    - name: Format /dev/sda1 & /dev/sda2
+    - name: Formatar /dev/sda1 & /dev/sda2
       become: true
       community.general.filesystem:
         fstype: "{{ item.fstype }}"
@@ -26,7 +49,7 @@
           - { fstype: "swap", dev: "/dev/sda2" }
 
       # todo: add explicacao do pq isso funciona
-    - name: Mount sda1 (/) in /mnt/archinstall and sda3 (/scratch) in /mnt/archinstall/scratch
+    - name: Mount sda1 (/) no /mnt/archinstall & sda3 (/scratch) no /mnt/archinstall/scratch
       ansible.posix.mount:
         path: "{{ item.path }}"
         src: "{{ item.src }}"
@@ -37,23 +60,32 @@
           - { path: "/mnt/archinstall/scratch", src: "/dev/sda3" }
 
   tasks:
-    - name: Install archinstall
+    - name: Instalar archinstall
       become: true
       community.general.pacman:
         name: archinstall
         state: present
 
-    # - name: Checa se eh um pc novo (novo mac address)
-    # se for, promptar pra valores novos e rodar um role de atualizar proccm (add pc novo ou alterar mac de pc velho)
-    # # todo
+      # input_name e input_numeral devem ser passados pela CLI com a flag -e, --extra-vars "input_name=DrAbobrinha input_numeral=42"
+      # Caso nome inserido ja exista, atualiza mac address dele no inventorio (aka pc quebrou tamo trocando por outro e reaproveitando o hostname)
+    - name: Checa se eh um pc novo (novo mac address)
+      when: "{{ mac not in mac2hostname}}"
+      ansible.builtin.add_host:
+        name: "{{ input_name | mandatory }}"
+        groups: "clientes"
+        ansible_host: "192.168.0.{{ input_numeral | mandatory }}"
+        mac_ethernet: "{{ mac }}"
+        # todo: spawnar task or something pra atualizar o hosts do proccm pq se n resto vai dar pau
+
+    - name: Configurar archinstall file com nosso hostname
+      ansible.builtin.template:
+        src: /templates/user_configuration.j2
+        dest: /tmp/user_configuration.json
 
     - name: Run archinstall with our client settings
       become: true
       changed_when: true
-      ansible.builtin.command: "archinstall --config {{ url_config }} --creds {{ credentials }} --silent"
+      ansible.builtin.command: "archinstall --config {{ config_path }} --creds {{ credentials }} --silent"
       vars:
-        url_config: "<url_aqui>"
+        config_path: "/tmp/user_configuration.json"
         credetentials: "<algo_aqui>"
-        mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}"
-        nome_pc: "{{ mac2hostname[mac] }}"
-        # inventory hostname vai dar algo como localhost, por isso extrair pelo mac address

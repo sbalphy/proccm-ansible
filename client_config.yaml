@@ -1,5 +1,14 @@
 - name: Config freshly installed client
 # assume q client_install.yaml ja rodou ou esta num estado equivalente
+
+- hosts: proccm
+  tasks:
+    - name: Copiar CA cert do proccm para o localhost
+      ansible.builtin.fetch:
+        src: /etc/ssl/certs/cacert.pem
+        dest: /etc/ssl/certs/ca.cert
+        flat: true
+
 - hosts: localhost
   vars:
     porta_ldap: 12421
@@ -11,6 +20,7 @@
     - nfs
     - ldap
     - pam
-    - cups
+    - role: role cups
+      vars: { impressora_ip: "143.107.90.4" }
     - role: ssh_keys
       tags: cp_ssh_keys

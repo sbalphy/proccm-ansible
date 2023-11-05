@@ -21,7 +21,6 @@
           - tldr
           - htop
 
-    # pq n tem java do yoshi aqui, todo: ver isso
     - name: Install Computação Científica
       community.general.pacman:
         state: present

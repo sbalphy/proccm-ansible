@@ -5,23 +5,17 @@
     name:
       - openldap
 
-- hosts: proccm
-  tasks:
-    - name: Copiar certificado cacert.pem do proccm para o pc atual
-      ansible.posix.synchronize:
-        src: /etc/ssl/certs/cacert.pem
-        dest: /etc/ssl/certs/ca.cert
-        mode: pull
-      delegate_to: localhost
-# ref: https://stackoverflow.com/a/35742157
-
-- name: TODO
-  ansible.builtin.blockinfile:
-    path: /etc/openldap/ldap.conf
+# URI (Uniform resource information): define endereco na base de dados do ldap;
+# BASE é o ponto partida de buscas dentro do ldap, "default  base  DN  to  use  when  performing  ldap operations.";
+# TLS_CACERT: o certificado ssl que vc vai usar pra conectar com o servidor de forma a garantir que o tráfego é encriptado e seguro;
+# docs: https://www.openldap.org/software//man.cgi?query=ldap.conf&sektion=5&apropos=0&manpath=OpenLDAP+2.4-Release
+- name: Configurar cliente LDAP
+  ansible.builtin.copy:
+    dest: /etc/openldap/ldap.conf
     owner: root
     group: root
     mode: "0644"
-    block: |
+    content: |
       BASE            dc=proccm,dc=redealuno,dc=usp,dc=br
       URI             ldap://proccm.redealuno.usp.br:{{<porta_ldap>}}
 

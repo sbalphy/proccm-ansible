@@ -24,12 +24,10 @@
 
 ## wiki tem mais umas websteps pra impressora,
 ## n sei se faz sentido add aqui de alguma forma
-
-# TODO: Parametrizar esse IP pelo inventario?
 - name: Fazer impressora acessivel pela rede
   become: true
   ansible.builtin.lineinfile:
     path: /etc/sane.d/xerox_mfp.conf
-    regexp: "^tcp 143.107.90.4"
-    line: "tcp 143.107.90.4"
+    regexp: "^tcp {{ impressora_ip }}"
+    line: "tcp {{ impressora_ip }}"
     state: present
