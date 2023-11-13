@@ -24,13 +24,15 @@
 #   partitions[3]["name"] == "/scratch""       and   partitions[2]["fstype"] == "ext4"
 
 - name: Fresh client install
-- hosts: localhost
+  hosts: localhost
   vars:
     mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}"
     nome_pc: "{{ input_name | default(mac2hostname[mac]) }}" # inventory hostname vai dar algo como localhost, por isso extrair nome pelo mac address
+    venv: "venv_archinstall"
 
   pre_tasks:
     - name: Mkdirs no mnt pra dar mount
+      become: true
       ansible.builtin.file:
         path: /mnt/archinstall/scratch
         state: directory
@@ -44,32 +46,35 @@
       community.general.filesystem:
         fstype: "{{ item.fstype }}"
         dev: "{{ item.dev }}"
-        loop:
-          - { fstype: "ext4", dev: "/dev/sda1" }
-          - { fstype: "swap", dev: "/dev/sda2" }
+      loop:
+        - { fstype: "ext4", dev: "/dev/sda1" }
+        - { fstype: "swap", dev: "/dev/sda2" }
 
       # todo: add explicacao do pq isso funciona
     - name: Mount sda1 (/) no /mnt/archinstall & sda3 (/scratch) no /mnt/archinstall/scratch
+      become: true
       ansible.posix.mount:
         path: "{{ item.path }}"
         src: "{{ item.src }}"
         fstype: ext4
         state: mounted
-        loop:
-          - { path: "/mnt/archinstall", src: "/dev/sda1" }
-          - { path: "/mnt/archinstall/scratch", src: "/dev/sda3" }
+      loop:
+        - { path: "/mnt/archinstall", src: "/dev/sda1" }
+        - { path: "/mnt/archinstall/scratch", src: "/dev/sda3" }
 
   tasks:
+    # TODO: checar se sistema vai estar com os requirements de: pip, virtualenv, setuptools
     - name: Instalar archinstall
       become: true
-      community.general.pacman:
+      ansible.builtin.pip:
         name: archinstall
         state: present
+        virtualenv: "{{ venv }}"
 
       # input_name e input_numeral devem ser passados pela CLI com a flag -e, --extra-vars "input_name=DrAbobrinha input_numeral=42"
       # Caso nome inserido ja exista, atualiza mac address dele no inventorio (aka pc quebrou tamo trocando por outro e reaproveitando o hostname)
     - name: Checa se eh um pc novo (novo mac address)
-      when: "{{ mac not in mac2hostname}}"
+      when: mac not in mac2hostname
       ansible.builtin.add_host:
         name: "{{ input_name | mandatory }}"
         groups: "clientes"
@@ -79,13 +84,14 @@
 
     - name: Configurar archinstall file com nosso hostname
       ansible.builtin.template:
-        src: /templates/user_configuration.j2
+        src: templates/user_configuration.j2
         dest: /tmp/user_configuration.json
+        mode: "0777"
 
     - name: Run archinstall with our client settings
       become: true
       changed_when: true
-      ansible.builtin.command: "archinstall --config {{ config_path }} --creds {{ credentials }} --silent"
+      ansible.builtin.command: "{{ venv }}/bin/archinstall --config {{ config_path }} --creds {{ credentials }} --silent"
       vars:
         config_path: "/tmp/user_configuration.json"
-        credetentials: "<algo_aqui>"
+        credentials: "<algo_aqui>"
