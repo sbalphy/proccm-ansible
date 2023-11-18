@@ -1,0 +1,107 @@
+
+# Como o switch costumar dividir a rede interna e externa em vlan
+# por meio de tag, pode ser que pra ter internet vc precise 
+# subir os ip a a vlan manualmente
+
+# Aqui a interface externa é eno1.421 e a interna eno1. 
+
+- name: Install vlan support
+  ansible.builtin.apt:
+    state: present
+    name: 
+      - vlan
+      - resolvconf
+
+
+# TODO: terminar de parametrizar e assegurar que variaveis sao acessiveis
+# questao de talvez definir dns prematuramente antes de outras coisas serem instaladas
+# 2 ou 3 dns name servers?
+- name: Configurar interfaces - /etc/network/interfaces.d
+  ansible.builtin.template:
+    src: "templates/interfaces_{{ item }}.j2"
+    dest: "/etc/network/interfaces.d/interface_{{ item }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop:
+    - interna
+    - externa
+
+
+# <Problemas específicos da máquina atual>
+
+# Estávamos tendo um problema com a interface de rede intel. Aparentemente ela tem um bug que aparece devido à um negócio
+# chamado TCP segmentation offload (tso). A solução foi desligar isso aí. Para isso, instale o pacote ethtool:
+
+#   # apt install ethtool
+
+# No arquivo /etc/network/interfaces, adicione à seção da interface eno1 a segunte linha
+
+#   pre-up ethtool -K eno1 tso off
+
+# Reinicie o serviço networking ou reboote o pc. Para checar se funcionou, use o comando:
+
+#   # ethtool --show-offload eno1
+
+# Verifique se a variável tcp-segmentation-offload aparece como off.
+
+
+####### processo manual pra debuggar seria:
+# Ligando na internet por meio de ip estático.
+
+# Aqui a interface externa é eno1.421 e a interna eno1. Esse nomes serão utilizados,
+# mas vc pode precisar modificar apropriadamente. Descubra o nome das interfaces com ip link
+
+# Altere e adicione as seguintes linhas ao arquivo /etc/network/interfaces:
+
+# -------
+# auto eno1.421
+# iface eno1.421 inet static
+# 	vlan-raw-device eno1
+# 	address 143.107.79.66
+# 	netmask 255.255.255.252
+# -------
+
+# Agora reboote ou reinicie o serviço networking.service. Vc deverá fazer isso após
+# quaisquer edições no arquivo /etc/network/interfaces para que as alterções comecem a
+# valer.
+
+# Com isso deve estar na rede usp. Para testar rode com um ip de fora:
+
+# 	ping 143.107.79.65
+
+# Agora adicione as seguintes linhas ap arquivo /etc/network/interfaces (ainda na interface enp0s25):
+
+# -------
+#         gateway 143.107.79.65
+#         dns-nameservers 143.107.253.3 143.107.253.5
+# 	dns-search proccm.redealuno.usp.br
+# -------
+
+# Para que a linha dns-nameservers seja entendida, instale o pacote resolvconf
+
+#   # apt install resolvconf
+
+# (Caso contrário seria necessário editar o arquivo resolv.conf)
+
+# Agora vc deve ter internet. Para testar:
+
+#  $ ping google.com
+
+# Vc deve também conseguir fazer ssh no usuário admin22: (talvez já desse no passo anterior)
+
+#  $ ssh admin22@proccm.redealuno.usp.br -p 14641
+
+
+# Configurando a rede interna:
+
+# Adicione as seguintes linhas no /etc/network/interfaces:
+
+# -------
+# auto eno1
+# iface eno1 inet static
+# 	address 192.168.0.127
+# 	netmask 255.255.255.0
+# -------
+
+# A partir de agora a rede interna já deve estar funcionando. Vc pode testar o funcionamento pingando um cliente a partir da proccm ou pingando o proccm a partir de algum cliente.

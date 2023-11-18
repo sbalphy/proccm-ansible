@@ -1,0 +1,9 @@
+---
+# tasks file for read_client_vars
+- name: Gerar variaveis uteis a partir do inventory
+  set_fact:
+    hostname2ip:  "{{ lookup('template', 'hostname2ip.j2')  | from_yaml }}"
+    ip2hostname:  "{{ lookup('template', 'ip2hostname.j2')  | from_yaml }}"
+    hostame2mac:  "{{ lookup('template', 'hostame2mac.j2')  | from_yaml }}"
+    mac2hostname: "{{ lookup('template', 'mac2hostname.j2') | from_yaml }}"
+       

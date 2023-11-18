@@ -1,0 +1,67 @@
+# assume fresh install
+- name: Config proccm
+  hosts: localhost
+  vars:
+    porta_ldap: 12421
+    porta_ssh: 14641
+  tasks:
+    - name: Install sudo-ldap
+      ansible.builtin.apt:
+        name: sudo-ldap
+        state: present
+
+    - name: Add /scripts ao secure_path do /etc/sudoers
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^Defaults\s*secure_path'
+        insertafter: '^Defaults' # insertafter is only honored if no match for regexp is found
+        line: 'Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/scripts"'
+        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Setar bash.basrc
+      block:
+      # alias sudo='sudo ' ref: https://stackoverflow.com/questions/37209913/how-does-alias-sudo-sudo-work
+        - name: Forcar pedir confirmacao para cp, mv e rm. Configurar history
+          ansible.builtin.blockinfile:
+            path: /etc/bash.bashrc
+            block: |
+              alias cp='cp -i'
+              alias mv='mv -i'
+              alias rm='rm -I'
+              alias sudo='sudo '
+              HISTSIZE=2000000
+              HISTFILESIZE=2000000
+              HISTTIMEFORMAT="%d/%m/%y %T "
+
+        - name: Add scripts to path & rodar proccmfetch ao abrir um terminal
+          ansible.builtin.lineinfile:
+            dest: /etc/bash.basrc
+            line: "{{ item }}"
+            state: present
+          loop:
+            - "export PATH=$PATH:/scripts"
+            - "proccmfetch"
+
+    - name: Sincronização de hora
+      ansible.builtin.service:
+        name: systemd-timesyncd.service
+        state: started
+        enabled: true
+
+
+# definir 192.168.0.127 como dns antes de configurar dns, qq rola?
+
+    - name: Install utilitarios
+      ansible.builtin.apt:
+        state: present
+        name:
+          - nmap
+          - zsh
+          - tldr
+          - bc # proccmfetch
+          - figlet # proccmfetch
+          - tree
+          - emacs
+          - neovim
+          - htop

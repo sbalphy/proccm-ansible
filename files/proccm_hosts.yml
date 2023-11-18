@@ -1,0 +1,27 @@
+- name: Setar hosts no proccm
+  block:
+    - name: Setar localhost proccm e fleming
+      lineinfile:
+        dest: /etc/hosts
+        regexp: ".*{{ item }}$"
+        line: "{{ hostvars[item].ansible_host }} {{ item }}.proccm.redealuno.usp.br {{ item }}"
+        state: present
+      loop:
+        - {ip: "127.0.0.1", fullname: "localhost", hostname: "" }
+        - {ip: "143.107.90.10", fullname: "fleming.cecm.usp.br", hostname: "fleming"}
+        - {ip: "# 143.107.79.66", fullname: "proccm.redealuno.usp.br", hostname: "proccm"}
+
+    - name: Remover 127.0.1.1 se existir
+      lineinfile:
+        dest: /etc/hosts
+        regexp: "127.0.1.1"
+        state: absent
+
+    - name: Setar clientes
+      lineinfile:
+        dest: /etc/hosts
+        regexp: ".*{{ item }}$"
+        line: "{{ hostvars[item].ansible_host }} {{ item }}.proccm.redealuno.usp.br {{ item }}"
+        state: present
+      when: hostvars[item].ansible_host is defined
+      with_items: "{{ groups.all }}"

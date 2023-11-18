@@ -1,0 +1,81 @@
+
+# Temos assim várias camadas de segurança: firewall, 
+# filtrando as portas do nfs pra quem está fora da LAN; 
+# exports, negando o mount pra quem tem ip de fora da lan; 
+# ouvir só na interface interna, evitando que, caso o firewall caia,
+# o serviço seja atacado, na possibilidade de existir um zero
+# day pro nfs (ou de alguém cagar no exports).
+
+- name: Install nfs server
+  ansible.builtin.apt:
+    state: present
+    name: 
+      - nfs-kernel-server
+      - rpcbind
+
+# Como vem enabled por default fica difícil saber qual é o daemon. 
+# Ao que parece é o nfs-server.service, mas tem vários outros
+# ativados por default que o nome começa com "nfs-". 
+# O nfs-kernel-server é um symlink para nfs-server.service (em /lib/systemd/system)
+# todo: sepa mudou e nome entre debian 9 e 12?
+- name: Enable nfs-server.service & bug fix
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop:
+    - nfs-server.service 
+    - rpc-statd.service # https://bugs.launchpad.net/ubuntu/+source/nfs-utils/+bug/1689777
+
+
+- name: Mkdirs /var/games & /script
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /var/games
+    - /script
+
+
+- name: Setar pastas a serem exportadas para clientes
+  ansible.builtin.lineinfile:
+    dest: /etc/exports
+    regexp: "^{{ item.dir }}"
+    line: "{{ item.line }}"
+    state: present
+  notify: Restart nfs
+  loop:
+    - { dir: "/home", line: "/home		192.168.0.0/27(rw,async,subtree_check,crossmnt)" }
+    - { dir: "/var/games", line: "/var/games	192.168.0.0/27(rw,async,subtree_check)" }
+    - { dir: "/scripts", line: "/scripts	192.168.0.0/27(rw,async,subtree_check)" }
+
+# todo: aumentar numero de threads de 8 pra 16
+#  parece um numero melhor pra quando muita gente ta usando a sala?
+- name: Fazer NFS escutar soh rede interna
+  ansible.builtin.copy:
+    dest: /etc/nfs.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      [nfsd]
+      host=192.168.0.127
+      threads=16
+  notify: Restart nfs
+
+# todo: otimizar nfs (arch wiki tem referencias boas pelo jeito )
+
+
+- handlers:
+  - name: Restart nfs
+    block:
+      - name: Force systemd to reread configs
+        ansible.builtin.systemd:
+          daemon_reload: true
+        
+      - name: Restart nfs-server
+        ansible.builtin.service:
+          name: nfs-server
+          state: restarted

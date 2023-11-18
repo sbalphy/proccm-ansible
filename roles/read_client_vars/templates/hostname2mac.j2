@@ -1,0 +1,3 @@
+{% for cliente in groups["clientes"] %}
+    "{{ cliente }}": "{{ hostvars[cliente].mac_ethernet }}"
+{% endfor %}

@@ -23,10 +23,13 @@
 #   partitions[2]["name"] == "swap""           and   partitions[1]["fstype"] == "swap"  and
 #   partitions[3]["name"] == "/scratch""       and   partitions[2]["fstype"] == "ext4"
 
+# todo: gerar vars e ler aqui antes de tudo
+
+
 - name: Fresh client install
   hosts: localhost
   vars:
-    mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}"
+    mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}" # pegar mac address do pc atual
     nome_pc: "{{ input_name | default(mac2hostname[mac]) }}" # inventory hostname vai dar algo como localhost, por isso extrair nome pelo mac address
     venv: "venv_archinstall"
 
@@ -73,6 +76,7 @@
 
       # input_name e input_numeral devem ser passados pela CLI com a flag -e, --extra-vars "input_name=DrAbobrinha input_numeral=42"
       # Caso nome inserido ja exista, atualiza mac address dele no inventorio (aka pc quebrou tamo trocando por outro e reaproveitando o hostname)
+      # TODO: isso atualiza soh pra run ou vai ser escrto pra arquivo?
     - name: Checa se eh um pc novo (novo mac address)
       when: mac not in mac2hostname
       ansible.builtin.add_host:
@@ -81,11 +85,19 @@
         ansible_host: "192.168.0.{{ input_numeral | mandatory }}"
         mac_ethernet: "{{ mac }}"
         # todo: spawnar task or something pra atualizar o hosts do proccm pq se n resto vai dar pau
+      # notify: proccm update hosts  # = proccm_hosts no proccm, delegate?
+
 
     - name: Configurar archinstall file com nosso hostname
       ansible.builtin.template:
-        src: templates/user_configuration.j2
-        dest: /tmp/user_configuration.json
+        src: templates/configuration.j2
+        dest: /tmp/configuration.json
+        mode: "0777"
+
+    - name: Copiar credentials
+      ansible.builtin.copy:
+        src: files/credentials.json
+        dest: /tmp/credentials.json
         mode: "0777"
 
     - name: Run archinstall with our client settings
@@ -93,5 +105,5 @@
       changed_when: true
       ansible.builtin.command: "{{ venv }}/bin/archinstall --config {{ config_path }} --creds {{ credentials }} --silent"
       vars:
-        config_path: "/tmp/user_configuration.json"
-        credentials: "<algo_aqui>"
+        config_path: "/tmp/configuration.json"
+        credentials: "/tmp/credentials.json"

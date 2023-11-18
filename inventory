@@ -1,12 +1,12 @@
-localhost               ansible_host=127.0.0.1	
-<!-- roteador wifi?  ansible_host=192.168.0.100 -->
-gateway                 ansible_host=143.107.79.65
-impressora              ansible_host=143.107.90.4
+; localhost               ansible_host=127.0.0.1	
+; <!-- roteador wifi?  ansible_host=192.168.0.100 -->
+; gateway                 ansible_host=143.107.79.65
+; impressora              ansible_host=143.107.90.4
 
-# IPS externos
+# IPS externos como ansible_host
 [servidores]
-proccm                  ansible_host=143.107.79.66          ansible_port=14641         ldap_port=12421
-fleming                 ansible_host=143.107.90.10
+proccm   ansible_host=143.107.79.66   ip_externo=143.107.79.66  ip_interno=192.168.0.127   ansible_port=14641   ldap_port=12421
+fleming                 ansible_host=143.107.90.10          ansible_port=14641
 
 [clientes] 
 newton                  ansible_host=192.168.0.1            mac_ethernet=18:C0:4D:F2:4A:8E         
@@ -24,7 +24,21 @@ boltzmann               ansible_host=192.168.0.12           mac_ethernet=70:71:B
 galileu                 ansible_host=192.168.0.13           mac_ethernet=70:71:BC:57:F3:04
 fermat                  ansible_host=192.168.0.14           mac_ethernet=70:71:BC:28:6C:2C          
 laplace                 ansible_host=192.168.0.15           mac_ethernet=70:71:bc:64:a9:96
-<!-- darwin                  ansible_host=192.168.0.16           mac_ethernet=           -->
+<!-- darwin             ansible_host=192.168.0.16           mac_ethernet=           -->
 erdos                   ansible_host=192.168.0.17           mac_ethernet=70:71:BC:57:F3:1D           
 noether                 ansible_host=192.168.0.18           mac_ethernet=00:0F:EA:B5:29:53
 lamarr                  ansible_host=192.168.0.19           mac_ethernet=70:71:BC:57:F3:18
+
+
+[pcs:children]
+servidores
+clientes
+
+[pcs:vars]
+senha_root: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  35396361393135656635393337353630326139333136653238653664656138623366303731356532
+  6365336561343363323835373963333535323935373136610a313861353638373233386136336134
+  31626531623834616264643261666238306165373935393538333934653762313236653136373132
+  6464336434343363660a353534393136303262353030643337653032376336363038656638336335
+  6136

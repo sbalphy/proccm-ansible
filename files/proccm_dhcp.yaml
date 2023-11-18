@@ -1,0 +1,63 @@
+# ref util: https://help.ubuntu.com/community/isc-dhcp-server
+
+
+# responsável por atribuir IPs a clientes que não tenham ip estático.
+# Por exemplo, algum aluno que traga o seu laptop e queira se ligar 
+# a rede por meio de cabo ethernet
+- name: Install servidor dhcp
+  ansible.builtin.apt:
+    name: isc-dhcp-server
+    state: present
+
+- name: Config servidor dhcp
+  block:
+  # não é 100% necessário, mas parece levemente melhor
+    - name: Remover 2 linhas ???? todo pq
+      lineinfile:
+        dest: /etc/dhcp/dhcpd.conf
+        line: "{{ item }}"
+        state: absent
+      loop:
+      - 'option domain-name "example.org";'
+      - 'option domain-name-servers ns1.example.org ns2.example.org;'
+
+      # todo: parametrizar essa task
+    - name: Configuracoes basicas da subrede e do dhcp
+      ansible.builtin.blockinfile:
+        path: /etc/dhcp/dhcpd.conf
+        block: |
+          subnet 192.168.0.0 netmask 255.255.255.0 {
+            range 192.168.0.128 192.168.0.252;
+            option domain-name-servers 192.168.0.127, 143.107.253.3, 143.107.253.5;
+            option domain-name "proccm.redealuno.usp.br";
+            option routers 192.168.0.127;
+            default-lease-time 3600;
+            max-lease-time 86400;
+          }
+
+      # qq isso faz? eh isso q faz eles terem ip fixos pelo mac address?
+    - name: Add todos os clientes
+      ansible.builtin.blockinfile:
+        path: /etc/dhcp/dhcpd.conf
+        block: |
+          host {{ item }} {
+            hardware ethernet {{ item.mac_ethernet }};
+            fixed-address {{ item.ansible_host }};
+          }
+      loop: "{{ groups['clientes'] }}"
+
+- name: Setar interface correta pro dhcp
+  lineinfile:
+    dest: /etc/default/isc-dhcp-server
+    regexp: "^INTERFACESv4="
+    line: "INTERFACESv4=\"{{ interface_interna }}\""
+    state: present
+
+
+- name: Enable isc-dhcp-server
+  ansible.builtin.service:
+    name: isc-dhcp-server
+    state: started
+    enabled: true
+
+

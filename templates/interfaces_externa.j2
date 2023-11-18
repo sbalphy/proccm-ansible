@@ -1,0 +1,9 @@
+auto {{ interface_externa }}.{{ tag_vlan }}
+iface {{ interface_externa }}.{{ tag_vlan }} inet static
+        vlan-raw-device {{ interface_externa }}
+        address {{ hostvars[proccm].ansible_default_ipv4 }}
+        netmask 255.255.255.252
+        gateway {{ gateway }}
+        # dns-* options are implemented by the resolvconf package, if installed
+        dns-nameservers 127.0.0.1 143.107.253.3 105143.107.253.5
+        dns-search proccm.redealuno.usp.br

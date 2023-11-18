@@ -1,0 +1,48 @@
+- name: Mudar porta ssh
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?\s?Port'
+    line: "Port {{ porta_ssh }}"
+    owner: root
+    group: root
+    mode: "0644"
+    validate: /usr/sbin/sshd -T -f %s
+  notify:
+    - Restart sshd.service
+
+- name: fail2ban
+  block:
+    - name: Install fail2ban
+      ansible.builtin.apt:
+        name: fail2ban
+        state: present
+
+    - name: Configurar fail2ban
+      community.general.ini_file:
+        path: /etc/fail2ban/jail.local
+        owner: root
+        group: root
+        mode: "0644"
+        section: "{{ item.group }}"
+        option: "{{ item.key }}"
+        value: "{{ item.value }}"
+      loop:
+        - { group: "DEFAULT", key: "bantime", value: "3600" }
+        - { group: "sshd", key: "enabled", value: "true" }
+        - { group: "sshd", key: "port", value: "{{ porta_ssh }}" }
+
+    - name: Checar se fail2ban realmente ta ligado
+      community.general.ini_file:
+        path: /etc/fail2ban/jail.d/defaults-debian.conf
+        owner: root
+        group: root
+        mode: "0644"
+        section: "sshd"
+        option: "enabled"
+        value: "true"
+
+  handlers:
+    - name: Restart sshd.service
+      ansible.builtin.service:
+        name: sshd.service
+        state: restarted

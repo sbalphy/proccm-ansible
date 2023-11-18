@@ -1,0 +1,4 @@
+{% for cliente in groups["clientes"] %}
+    "{{ cliente }}": "{{ hostvars[cliente].ansible_host }}"
+
+{% endfor %}

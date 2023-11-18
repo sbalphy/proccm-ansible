@@ -18,6 +18,7 @@
           - emacs
           - neovim
           - figlet # para o script proccmfetch funcionar
+          - bc # proccmfetch
           - tldr
           - htop
 
