@@ -1,0 +1,96 @@
+---
+# tasks file for iptables_proccm
+
+- name: Dar flush nas tabelas existentes (caso existam) para inicializar as novas
+  ansible.builtin.iptables:
+    table: '{{ item }}'
+    flush: true
+  loop:
+    - 'mangle'
+    - 'nat'
+    - 'filter'
+
+- name: Setar policy das cadeias built-in manejando pacotes que vem de fora - DROP para INPUT e FORWARD (recusar pacotes de entradas)
+  ansible.builtin.iptables:
+    chain: '{{ item }}'
+    policy: DROP
+  loop:
+    - 'INPUT'
+    - 'FORWARD'
+
+- name: Setar policy da cadeia built-in manejando pacotes saindo do servidor - ACCEPT para OUTPUT (confiar no user para enviar pacotes)
+  ansible.builtin.iptables:
+    chain: OUTPUT
+    policy: ACCEPT
+
+- name: Inserir regra para permitir ssh vindo da rede externa
+  ansible.builtin.iptables:
+    table: filter
+    chain: INPUT
+    in_interface: "{{ interface_externa }}"
+    protocol: tcp
+    destination_port: "{{ porta_ssh }}"
+    ctstate: NEW
+    jump: ACCEPT
+
+- name: Inserir regra para permitir ping vindo da rede externa
+  ansible.builtin.iptables:
+    table: filter
+    chain: INPUT
+    in_interface: "{{ interface_externa }}"
+    protocol: icmp
+    icmp_type: echo-request
+    ctstate: NEW
+    jump: ACCEPT
+
+
+- name: Inserir regra para permitir todos os pacotes vindos da rede interna
+  ansible.builtin.iptables:
+    table: filter
+    chain: INPUT
+    in_interface: "{{ interface_interna }}"
+    ctstate: NEW
+    jump: ACCEPT
+
+- name: Inserir regra para fazer forwarding de pacotes originados da rede interna para rede externa, confiando no usuario
+  ansible.builtin.iptables:
+    table: filter
+    chain: FORWARD
+    in_interface: "{{ interface_interna }}"
+    ctstate: NEW
+    jump: ACCEPT
+
+- name: Inserir regra para fazer NAT dos pacotes enviados
+  ansible.builtin.iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ interface_externa }}"
+    jump: SNAT #  Nao tenho 100% de certeza que isso eh um jump target valido, documentacao nao lista todos; mas na sintaxe nativa devia funcionar
+    to_source: "{{ ip_proccm_publico }}"
+
+
+- name: Inserir regra para aceitar todas os pacotes de conexoes estabelecidas ou relacionadas
+  ansible.builtin.iptables:
+    table: filter
+    chain: "{{ item }}"
+    ctstate:
+      - ESTABLISHED
+      - RELATED
+    jump: ACCEPT
+    loop:
+      - INPUT
+      - FORWARD
+      - OUTPUT
+
+- name: Inserir regra permitindo pacotes que possam ser usados por servicos em loopback
+  ansible.builtin.iptables:
+    table: filter
+    chain: INPUT
+    ctstate: NEW
+    in_interface: lo
+    jump: ACCEPT
+
+- name: Salvar iptables formada em arquivo persistente para que possa ser restaurado em boot pelo networking.services via preup rule em network/interfaces
+  community.general.iptables_state:
+    state: saved
+    path: /etc/iptables.rules
