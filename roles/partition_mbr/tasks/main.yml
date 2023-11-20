@@ -11,10 +11,9 @@
 #  "script": "unit KiB print "}
 
 #  if mbr :
-#   partitions[0]["name"] == "/""           and   partitions[0]["fstype"] == "ext4"  and
-#   partitions[1]["name"] == "swap""        and   partitions[1]["fstype"] == "swap"  and
-#   partitions[2]["name"] == "/scratch""    and   partitions[2]["fstype"] == "ext4"
-
+#   partitions[0]["name"] == "/""              and   partitions[0]["fstype"] == "ext4"  and
+#   partitions[1]["name"] == "swap""           and   partitions[1]["fstype"] == "swap"  and
+#   partitions[2]["name"] == "/scratch""       and   partitions[2]["fstype"] == "ext4"
 # elif gpt:
 #   partitions[0]["name"] == "boot""           and   partitions[0]["fstype"] == ""      and
 #   partitions[1]["name"] == "/""              and   partitions[0]["fstype"] == "ext4"  and
@@ -29,35 +28,69 @@
     mode: "0755"
     recurse: true # para criar dirs intermediarios, tipo mkdir -p
 
-- name: MBR/BIOS - Montar particoes
-  # when: "'uefi' not in ansible_run_tags"
-  block:
-    # N sei se formatar sda2 eh necessario ja q eh swap
-    # N formatar sda3 pq queremos manter scratch
-    - name: Formatar /dev/sda1 & /dev/sda2
-      become: true
-      community.general.filesystem:
-        fstype: "{{ item.fstype }}"
-        dev: "{{ item.dev }}"
-      loop:
-        - { fstype: "ext4", dev: "/dev/sda1" }
-        - { fstype: "swap", dev: "/dev/sda2" }
+- name: Ler tabela de particao
+  community.general.parted:
+    device: /dev/sda
+    unit: 'MiB' # (always use unit when probing)
+  register: sda_info
 
-      # documentacao eh ruim mas no archinstall tem a opcao "pre-mount" que vai soh replicar
-      # o q ele encontrar no /mnt/archinstall
-    - name: Mount sda1 (/) no /mnt/archinstall & sda3 (/scratch) no /mnt/archinstall/scratch
-      become: true
-      ansible.posix.mount:
-        path: "{{ item.path }}"
-        src: "{{ item.src }}"
-        fstype: ext4
-        state: mounted
-      loop:
-        - { path: "/mnt/archinstall", src: "/dev/sda1" }
-        - { path: "/mnt/archinstall/scratch", src: "/dev/sda3" }
+- name: Remove all partitions from disk
+  tags: force
+  community.general.parted:
+    state: absent
+    device: /dev/sda
+    number: '{{ item.num }}'
+  loop: '{{ sda_info.partitions }}'
 
 
+- name: MBR/BIOS - Criar nova tabela de particao
+  tags: mbr
+  when: not ( sda_info.partitions[0]['fstype'] == 'ext4' and
+              sda_info.partitions[1]['fstype'] == 'swap' and
+              sda_info.partitions[2]['fstype'] == 'ext4' and )
+        or 'force' in ansible_run_tags
+  community.general.parted:
+    state: present
+    device: /dev/sda
+    number: "{{ item.number }}"
+    fs_type: "{{ item.fs }}"
+    part_start: "{{ item.part_start }}"
+    part_end: "{{ item.part_end }}"
+  loop: "{{ mbr_partitions | dict2items }}"
 
 # - name: UEFI/GPT - Montar particoes
-#   tags: uefi
-#   block:
+#   when: 'mbr' not in ansible_run_tags and
+#         ( not ( sda_info.partitions[0]['fstype'] == 'ext4' and
+#                 sda_info.partitions[1]['fstype'] == 'swap' and
+#                 sda_info.partitions[2]['fstype'] == 'ext4' and )
+#          'force' in ansible_run_tags or )
+#   community.general.parted:
+#     state: present
+#     device: /dev/sda
+#   loop: "{{ gpt_partitions | dict2items }}"
+
+
+# TODO: N sei se formatar sda2 eh necessario ja q eh swap
+# N formatar sda3 pq queremos manter scratch
+- name: Formatar / & swap
+  become: true
+  community.general.filesystem:
+    fstype: "{{ item.fstype }}"
+    dev: "{{ item.dev }}"
+  loop:
+    - { fstype: "ext4", dev: "/dev/sda{{ root_partition }}" }
+    - { fstype: "swap", dev: "/dev/sda{{ swap_partition }}" }
+
+
+  # documentacao eh ruim mas no archinstall tem a opcao "pre-mount" que vai soh replicar
+  # o q ele encontrar no /mnt/archinstall
+- name: Mount / no /mnt/archinstall & /scratch no /mnt/archinstall/scratch
+  become: true
+  ansible.posix.mount:
+    path: "{{ item.path }}"
+    src: "{{ item.src }}"
+    fstype: ext4
+    state: mounted
+  loop:
+    - { path: "/mnt/archinstall", src: "/dev/sda{{ root_partition }}" }
+    - { path: "/mnt/archinstall/scratch", src: "/dev/sda{{ scratch_partition }}" }

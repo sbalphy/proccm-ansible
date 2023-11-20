@@ -44,6 +44,7 @@
   ansible.builtin.systemd:
     daemon_reload: true
 
+# todo: refatorar essa task pra usar https://docs.ansible.com/ansible/latest/collections/ansible/posix/mount_module.html
 - name: Copiar nfs mountpoint configs para o fstab para definir a montagem automática
   ansible.builtin.blockinfile:
     path: /etc/fstab
