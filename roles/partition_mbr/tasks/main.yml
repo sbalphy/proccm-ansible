@@ -29,12 +29,14 @@
     recurse: true # para criar dirs intermediarios, tipo mkdir -p
 
 - name: Ler tabela de particao
+  become: true
   community.general.parted:
     device: /dev/sda
     unit: 'MiB' # (always use unit when probing)
   register: sda_info
 
 - name: Remove all partitions from disk
+  become: true
   tags: force
   community.general.parted:
     state: absent
@@ -44,6 +46,7 @@
 
 
 - name: MBR/BIOS - Criar nova tabela de particao
+  become: true
   tags: mbr
   when: not ( sda_info.partitions[0]['fstype'] == 'ext4' and
               sda_info.partitions[1]['fstype'] == 'swap' and
