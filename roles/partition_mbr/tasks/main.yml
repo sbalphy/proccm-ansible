@@ -37,7 +37,7 @@
 
 - name: Remove all partitions from disk
   become: true
-  tags: [ force, never]
+  tags: [force, never]
   community.general.parted:
     state: absent
     device: /dev/sda
@@ -61,6 +61,7 @@
     fs_type: "{{ item.fs }}"
     part_start: "{{ item.part_start }}"
     part_end: "{{ item.part_end }}"
+  register: criar_tabela_results
   loop: "{{ mbr_partitions }}"
 
 # - name: UEFI/GPT - Montar particoes
@@ -87,6 +88,12 @@
     - { fstype: "ext4", dev: "/dev/sda{{ root_partition }}" }
     - { fstype: "swap", dev: "/dev/sda{{ swap_partition }}" }
 
+- name: Formatar /scratch
+  become: true
+  when: criar_tabela_results is defined
+  community.general.filesystem:
+    fstype: "ext4"
+    dev: "/dev/sda{{ scratch_partition }}"
 
   # documentacao eh ruim mas no archinstall tem a opcao "pre-mount" que vai soh replicar
   # o q ele encontrar no /mnt/archinstall
