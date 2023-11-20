@@ -2,6 +2,7 @@
 # tasks file for archinstall
 
 - name: Instalar deps
+  become: true
   ansible.builtin.package:
     state: present
     name: 
