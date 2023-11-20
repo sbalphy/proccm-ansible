@@ -21,7 +21,8 @@
     - nfs
     - ldap
     - pam
-    - role: role cups
-      vars: { impressora_ip: "143.107.90.4" }
+    - role: cups
+      vars: 
+        impressora_ip: "143.107.90.4" 
     - role: ssh_keys
       tags: cp_ssh_keys

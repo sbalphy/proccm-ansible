@@ -1,0 +1,63 @@
+---
+# Esse role assume q a tabela de particao do cliente segue a seguinte logica (caso exista):
+# sda1 /, sda2 swap, sda3 /scratch
+
+# TODO, criar algo pra checar se existe uma tabela de particao (do nosso esquema?)
+# or something e se n tiver particionar usando ansible parted usando nossos defaults
+# ideia de logica meio assim:
+# {"disk": {"dev": "/dev/sdb", "logical_block": 512, "model": "VMware Virtual disk", "physical_block": 512, "size": 5.0, "table": "msdos", "unit": "gib"},
+#  "partitions": [{"begin": 0.0, "end": 1.0, "flags": ["boot", "lvm"], "fstype": "", "name": "", "num": 1, "size": 1.0},
+#                 {"begin": 1.0, "end": 5.0, "flags": [], "fstype": "", "name": "", "num": 2, "size": 4.0}],
+#  "script": "unit KiB print "}
+
+#  if mbr :
+#   partitions[0]["name"] == "/""           and   partitions[0]["fstype"] == "ext4"  and
+#   partitions[1]["name"] == "swap""        and   partitions[1]["fstype"] == "swap"  and
+#   partitions[2]["name"] == "/scratch""    and   partitions[2]["fstype"] == "ext4"
+
+# elif gpt:
+#   partitions[0]["name"] == "boot""           and   partitions[0]["fstype"] == ""      and
+#   partitions[1]["name"] == "/""              and   partitions[0]["fstype"] == "ext4"  and
+#   partitions[2]["name"] == "swap""           and   partitions[1]["fstype"] == "swap"  and
+#   partitions[3]["name"] == "/scratch""       and   partitions[2]["fstype"] == "ext4"
+
+- name: Mkdirs no /mnt pra dar mount
+  become: true
+  ansible.builtin.file:
+    path: /mnt/archinstall/scratch
+    state: directory
+    mode: "0755"
+    recurse: true # para criar dirs intermediarios, tipo mkdir -p
+
+- name: MBR/BIOS - Montar particoes
+  # when: "'uefi' not in ansible_run_tags"
+  block:
+    # N sei se formatar sda2 eh necessario ja q eh swap
+    # N formatar sda3 pq queremos manter scratch
+    - name: Formatar /dev/sda1 & /dev/sda2
+      become: true
+      community.general.filesystem:
+        fstype: "{{ item.fstype }}"
+        dev: "{{ item.dev }}"
+      loop:
+        - { fstype: "ext4", dev: "/dev/sda1" }
+        - { fstype: "swap", dev: "/dev/sda2" }
+
+      # documentacao eh ruim mas no archinstall tem a opcao "pre-mount" que vai soh replicar
+      # o q ele encontrar no /mnt/archinstall
+    - name: Mount sda1 (/) no /mnt/archinstall & sda3 (/scratch) no /mnt/archinstall/scratch
+      become: true
+      ansible.posix.mount:
+        path: "{{ item.path }}"
+        src: "{{ item.src }}"
+        fstype: ext4
+        state: mounted
+      loop:
+        - { path: "/mnt/archinstall", src: "/dev/sda1" }
+        - { path: "/mnt/archinstall/scratch", src: "/dev/sda3" }
+
+
+
+# - name: UEFI/GPT - Montar particoes
+#   tags: uefi
+#   block:
