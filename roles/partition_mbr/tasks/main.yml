@@ -37,7 +37,7 @@
 
 - name: Remove all partitions from disk
   become: true
-  tags: force
+  tags: [ force, never]
   community.general.parted:
     state: absent
     device: /dev/sda
