@@ -59,7 +59,7 @@
     fs_type: "{{ item.fs }}"
     part_start: "{{ item.part_start }}"
     part_end: "{{ item.part_end }}"
-  loop: "{{ mbr_partitions | dict2items }}"
+  loop: "{{ mbr_partitions }}"
 
 # - name: UEFI/GPT - Montar particoes
 #   when: 'mbr' not in ansible_run_tags and
