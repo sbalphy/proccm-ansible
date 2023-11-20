@@ -49,6 +49,7 @@
   become: true
   tags: mbr
   when: >
+    sda_info.partitions | length != 3 or
     not ( sda_info.partitions[0]['fstype'] == 'ext4' and
           sda_info.partitions[1]['fstype'] == 'swap' and
           sda_info.partitions[2]['fstype'] == 'ext4' )
