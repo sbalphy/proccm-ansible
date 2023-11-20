@@ -7,8 +7,8 @@ scratch_partition: "{{ '3' if 'uefi' not in ansible_run_tags else '4' }}"
 
 mbr_partitions:
   - { number: "1", fs: "ext4", part_start: "0%", part_end: "50GB" }
-  - { number: "2", fs: "swap", part_start: "50GB", part_end: "{{ (swap_size + 50) | str }}GB" }
-  - { number: "3", fs: "ext4", part_start: "{{ (swap_size + 50) | str }}GB", part_end: "100%" }
+  - { number: "2", fs: "swap", part_start: "50GB", part_end: "{{ (swap_size + 50) | string }}GB" }
+  - { number: "3", fs: "ext4", part_start: "{{ (swap_size + 50) | string }}GB", part_end: "100%" }
 
 
 # gpt_partitions:
