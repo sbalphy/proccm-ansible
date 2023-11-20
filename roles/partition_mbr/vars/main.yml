@@ -1,6 +1,6 @@
 ---
 # vars file for partition_mbr
-swap_size: input_swap | default(6) | int
+swap_size: ( input_swap | default(6) ) | int
 root_partition:    "{{ '1' if 'uefi' not in ansible_run_tags else '2' }}"
 swap_partition:    "{{ '2' if 'uefi' not in ansible_run_tags else '3' }}"
 scratch_partition: "{{ '3' if 'uefi' not in ansible_run_tags else '4' }}"
