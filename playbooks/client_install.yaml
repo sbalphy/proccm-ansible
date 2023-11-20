@@ -31,7 +31,7 @@
   vars:
     mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress | upper }}" # pegar mac address do pc atual
     nome_pc: "{{ input_name | default(mac2hostname[mac]) }}" # inventory hostname vai dar algo como localhost, por isso extrair nome pelo mac address
-    venv: "/tmp/venv_archinstall"
+    archinstall_path: "/tmp/"
 
   pre_tasks:
     - name: Mkdirs no mnt pra dar mount
@@ -66,23 +66,13 @@
         - { path: "/mnt/archinstall/scratch", src: "/dev/sda3" }
 
   tasks:
-    - name: Instalar requirements pra instalar archinstall com pip
+    - name: Instalar archinstall
       become: true
-      # package pra tentar ser mais iso agnostico
-      ansible.builtin.package:
-        state: present
-        name:
-          - pkgconf
-          - python-virtualenv
-          - python-setuptools
-          - python-pip
-
-    - name: Instalar archinstall com pip
-      become: true
-      ansible.builtin.pip:
-        name: archinstall
-        state: present
-        virtualenv: "{{ venv }}"
+      ansible.builtin.git:
+        repo: 'https://github.com/archlinux/archinstall.git'
+        dest: "{{ archinstall_path }}"
+        version: 'f16af43949085b06478d2e4c45ed61fa8e595171' # Commit logo dps de darem merge no fix pra pre-mounted diskconfig (commit 30a374a do PR#2221)
+        # https://github.com/archlinux/archinstall/tree/f16af43949085b06478d2e4c45ed61fa8e595171
 
       # input_name e input_numeral devem ser passados pela CLI com a flag -e, --extra-vars "input_name=DrAbobrinha input_numeral=42"
       # Caso nome inserido ja exista, atualiza mac address dele no inventorio (aka pc quebrou tamo trocando por outro e reaproveitando o hostname)
@@ -113,7 +103,7 @@
     - name: Run archinstall with our client settings
       become: true
       changed_when: true
-      ansible.builtin.command: "{{ venv }}/bin/archinstall --config {{ config_path }} --creds {{ credentials }} --silent"
+      ansible.builtin.command: "python {{ archinstall_path }}archinstall --config {{ config_path }} --creds {{ credentials }} --silent"
       vars:
         config_path: "/tmp/configuration.json"
         credentials: "/tmp/credentials.json"
