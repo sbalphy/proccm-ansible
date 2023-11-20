@@ -1,0 +1,57 @@
+
+
+- name: Install ldapscripts
+  ansible.builtin.apt:
+    state: present
+    name:
+      - ldapscripts
+
+- name: Config ldapscripts
+  block:
+    - name: 
+      ansible.builtin.lineinfile:
+        dest: /etc/ldapscripts/ldapscripts.conf
+        regexp: "{{ item.regex }}"
+        line: "{{ item.line }}"
+        state: present
+      loop:
+        - { regex: '^SERVER', line: 'SERVER="ldapi:///"' }
+        - { regex: '^SUFFIX', line: 'SUFFIX="dc=proccm,dc=redealuno,dc=usp,dc=br" # Global suffix' }
+        - { regex: '^GSUFFIX', line: 'GSUFFIX="ou=Group"        # Groups ou (just under $SUFFIX)' }
+        - { regex: '^USUFFIX', line: 'USUFFIX="ou=People"         # Users ou (just under $SUFFIX)' }
+        - { regex: '^SASLAUTH', line: 'SASLAUTH="EXTERNAL"' }
+        - { regex: '^GIDSTART', line: 'GIDSTART="1000" # Group ID' }
+        - { regex: '^UIDSTART', line: 'UIDSTART="1000" # User ID' }
+        - { regex: '^CREATEHOMES', line: 'CREATEHOMES="yes"' }                                 # criar homes pra todo usuario novo
+        - { regex: '^HOMEPERMS', line: 'HOMEPERMS="700"' }                                     # permissao padrao das homes
+        - { regex: '^PASSWORDGEN', line: 'PASSWORDGEN="<ask>"' }                               # pedir senha para usuario ao criar um usuario novo (opcao pwgen gera uma aleatoriamente)
+        - { regex: '^GTEMPLATE', line: 'GTEMPLATE="/etc/ldapscripts/ldapaddgroup.template"' }  # endereco template user/group
+        - { regex: '^UTEMPLATE', line: 'UTEMPLATE="/etc/ldapscripts/ldapadduser.template"' }   # endereco template user/group
+
+    - name: Remover linhas indesejadas
+      ansible.builtin.lineinfile:
+        dest: /etc/ldapscripts/ldapscripts.conf
+        line: "{{ item }}"
+        state: absent
+      loop: 
+        - 'BINDDN="cn=aManager,dc=example,dc=com"'
+        - 'BINDPWDFILE="/etc/ldapscripts/ldapscripts.passwd"'
+        - 'PASSWORDGEN="pwgen"'
+        # Note que pode ser interessante utilizar PASSWORDGEN="pwgen" ou algum dos outros métodos 
+        # de geração de senhaas aleatórias na época que entram os bixos. 
+        # Nesse caso lembre de definir RECORDPASSWORDS="yes", pra vc saber quais senhas foram geradas e poder passar pra eles.
+        # Aparentemente a variável PASSWORDFILE define pra onde vão essas senhas, o default é /var/log/ldapscripts_passwd.log. 
+        # LEMBRE-SE DE APAGAR ESSE ARQUIVO DEPOIS QUE TERMINAR. ALÉM DISSO, DESLIGUE A GRAVAÇÃO DE SENHAS.
+        # Mudar o caminho do arquivo para /tmp pq aí qualquer coisa o arquivo será apagado logo.
+
+
+- name: Copiar ldapscript templates
+  ansible.builtin.copy:
+    src: "files/ldapadd{{ item }}.template"
+    dest: "/etc/ldapscripts/ldapadd{{ item }}.template"
+    mode: "0644"
+    owner: root
+    group: root
+  loop:
+    - user
+    - group

@@ -1,0 +1,31 @@
+;
+; pr�-aluno CCM
+;
+$TTL    604800
+@       IN      SOA     proccm.redealuno.usp.br. hostmaster.proccm.redealuno.usp.br. (
+                        201201212       ; Serial
+                        8H              ; Refresh
+                        2H              ; Retry
+                        4W              ; Expire
+                        1D )            ; Negative Cache TTL
+;
+                NS      proccm.redealuno.usp.br.        ; name server
+
+
+proccm.redealuno.usp.br. A host_vars[proccm].ip_interno
+proccm.proccm.redealuno.usp.br. A host_vars[proccm].ip_interno
+
+{% for name in ["ns", "hostmaster", "ntp1", "ntp"] %}
+
+"{{ name }}"              CNAME              proccm.proccm.redealuno.usp.br.
+
+{% endfor %}
+
+
+{% for cliente in groups["clientes"] %}
+
+"{{ cliente }}"           A         hostvars[cliente].ansible_host
+
+{% endfor %}
+
+fleming         CNAME   fleming.cecm.usp.br.

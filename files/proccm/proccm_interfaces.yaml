@@ -1,20 +1,17 @@
 
 # Como o switch costumar dividir a rede interna e externa em vlan
-# por meio de tag, pode ser que pra ter internet vc precise 
+# por meio de tag, pode ser que pra ter internet vc precise
 # subir os ip a a vlan manualmente
 
-# Aqui a interface externa é eno1.421 e a interna eno1. 
 
 - name: Install vlan support
   ansible.builtin.apt:
     state: present
-    name: 
+    name:
       - vlan
       - resolvconf
 
 
-# TODO: terminar de parametrizar e assegurar que variaveis sao acessiveis
-# questao de talvez definir dns prematuramente antes de outras coisas serem instaladas
 # 2 ou 3 dns name servers?
 - name: Configurar interfaces - /etc/network/interfaces.d
   ansible.builtin.template:
@@ -23,6 +20,10 @@
     owner: root
     group: root
     mode: '0644'
+  vars:
+    interface: "{{ ansible_facts.interfaces.sort()[0] }}"
+    gateway: "143.107.79.65"
+    vlan_tag: "421"
   loop:
     - interna
     - externa

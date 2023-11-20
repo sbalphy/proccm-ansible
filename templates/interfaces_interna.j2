@@ -1,7 +1,7 @@
-auto {{ interface_interna }}
-iface {{ interface_interna }} inet static
+auto {{ interface }}
+iface {{ interface }} inet static
         address 192.168.0.127
         netmask 255.255.255.0
         pre-up echo 1 > /proc/sys/net/ipv4/ip_forward
         pre-up iptables-restore < /etc/iptables.rules
-        pre-up ethtool -K {{ interface_interna }} tso off
+        pre-up ethtool -K {{ interface }} tso off

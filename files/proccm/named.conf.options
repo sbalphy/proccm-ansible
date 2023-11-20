@@ -1,0 +1,29 @@
+options {
+        // Arquivo copiado pelo ansible, defaults podem ter mudado desde entao
+        // ref: https://bind9.readthedocs.io/en/stable/reference.html#namedconf-statement-options
+        directory "/var/cache/bind";
+
+        // If there is a firewall between you and nameservers you want
+        // to talk to, you may need to fix the firewall to allow multiple
+        // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+        // If your ISP provided one or more IP addresses for stable 
+        // nameservers, you probably want to use them as forwarders.  
+        // Uncomment the following block, and insert the addresses replacing 
+        // the all-0's placeholder.
+
+        forward first; # "causes the server to query the forwarders first; if that does not answer the question, the server then looks for the answer itself."
+        forwarders {
+                143.107.253.5; # dns usp
+        };
+
+        //========================================================================
+        // If BIND logs error messages about the root key being expired,
+        // you will need to update your keys.  See https://www.isc.org/bind-keys
+        //========================================================================
+        dnssec-validation auto; # Ativa dnssec, ref: https://www.cloudflare.com/learning/dns/dns-security/
+
+        # auth-nxdomain: "Controls whether BIND, acting as a resolver, provides authoritative NXDOMAIN (domain does not exist) answers."
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on { 127.0.0.1; 192.168.0.127; };
+};

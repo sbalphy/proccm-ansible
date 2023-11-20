@@ -1,0 +1,15 @@
+dn: uid=<user>,<usuffix>,<suffix>
+uid: <user>
+cn: <user>
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+shadowLastChange: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: <shell>
+uidNumber: <uid>
+gidNumber: <gid>
+homeDirectory: <home>
+gecos: <ask>

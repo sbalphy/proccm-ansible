@@ -1,6 +1,6 @@
-auto {{ interface_externa }}.{{ tag_vlan }}
-iface {{ interface_externa }}.{{ tag_vlan }} inet static
-        vlan-raw-device {{ interface_externa }}
+auto {{ interface }}.{{ vlan_tag }}
+iface {{ interface }}.{{ vlan_tag }} inet static
+        vlan-raw-device {{ interface }}
         address {{ hostvars[proccm].ansible_default_ipv4 }}
         netmask 255.255.255.252
         gateway {{ gateway }}

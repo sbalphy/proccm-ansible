@@ -5,30 +5,33 @@
 
 # IPS externos como ansible_host
 [servidores]
-proccm   ansible_host=143.107.79.66   ip_externo=143.107.79.66  ip_interno=192.168.0.127   ansible_port=14641   ldap_port=12421
+proccm                  ansible_host=143.107.79.66          ansible_port=14641   ldap_port=12421  ip_externo=143.107.79.66  ip_interno=192.168.0.127 numeral=127
 fleming                 ansible_host=143.107.90.10          ansible_port=14641
 
 [clientes] 
-newton                  ansible_host=192.168.0.1            mac_ethernet=18:C0:4D:F2:4A:8E         
-schrodinger             ansible_host=192.168.0.2            mac_ethernet=70:71:BC:57:E4:34
-turing                  ansible_host=192.168.0.3            mac_ethernet=70:71:BC:57:F2:19          
-feynman                 ansible_host=192.168.0.4            mac_ethernet=70:71:bc:57:e4:d4
-euler                   ansible_host=192.168.0.5            mac_ethernet=70:71:BC:57:F0:0C           
-franklin                ansible_host=192.168.0.6            mac_ethernet=00:22:64:FD:AF:13
-curie                   ansible_host=192.168.0.7            mac_ethernet=00:22:4d:51:9c:fe       
-knuth                   ansible_host=192.168.0.8            mac_ethernet=70:71:BC:57:E4:FC       
-einstein                ansible_host=192.168.0.9            mac_ethernet=70:71:BC:52:BA:9E
-gauss                   ansible_host=192.168.0.10           mac_ethernet=70:71:BC:64:AD:12           
-pauling                 ansible_host=192.168.0.11           mac_ethernet=70:71:BC:4F:6E:0A
-boltzmann               ansible_host=192.168.0.12           mac_ethernet=70:71:BC:57:F2:1E
-galileu                 ansible_host=192.168.0.13           mac_ethernet=70:71:BC:57:F3:04
-fermat                  ansible_host=192.168.0.14           mac_ethernet=70:71:BC:28:6C:2C          
-laplace                 ansible_host=192.168.0.15           mac_ethernet=70:71:bc:64:a9:96
-<!-- darwin             ansible_host=192.168.0.16           mac_ethernet=           -->
-erdos                   ansible_host=192.168.0.17           mac_ethernet=70:71:BC:57:F3:1D           
-noether                 ansible_host=192.168.0.18           mac_ethernet=00:0F:EA:B5:29:53
-lamarr                  ansible_host=192.168.0.19           mac_ethernet=70:71:BC:57:F3:18
+newton                  ansible_host=192.168.0.1            mac_ethernet=18:C0:4D:F2:4A:8E      numeral=1         
+schrodinger             ansible_host=192.168.0.2            mac_ethernet=70:71:BC:57:E4:34      numeral=2
+turing                  ansible_host=192.168.0.3            mac_ethernet=70:71:BC:57:F2:19      numeral=3         
+feynman                 ansible_host=192.168.0.4            mac_ethernet=70:71:BC:57:E4:D4      numeral=4
+euler                   ansible_host=192.168.0.5            mac_ethernet=70:71:BC:57:F0:0C      numeral=5          
+franklin                ansible_host=192.168.0.6            mac_ethernet=00:22:64:FD:AF:13      numeral=6
+curie                   ansible_host=192.168.0.7            mac_ethernet=00:22:4D:51:9C:FE      numeral=7      
+knuth                   ansible_host=192.168.0.8            mac_ethernet=70:71:BC:57:E4:FC      numeral=8      
+einstein                ansible_host=192.168.0.9            mac_ethernet=70:71:BC:52:BA:9E      numeral=9
+gauss                   ansible_host=192.168.0.10           mac_ethernet=70:71:BC:64:AD:12      numeral=10          
+pauling                 ansible_host=192.168.0.11           mac_ethernet=70:71:BC:4F:6E:0A      numeral=11
+boltzmann               ansible_host=192.168.0.12           mac_ethernet=70:71:BC:57:F2:1E      numeral=12
+galileu                 ansible_host=192.168.0.13           mac_ethernet=70:71:BC:57:F3:04      numeral=13
+fermat                  ansible_host=192.168.0.14           mac_ethernet=70:71:BC:28:6C:2C      numeral=14        
+laplace                 ansible_host=192.168.0.15           mac_ethernet=70:71:BC:64:A9:96      numeral=15
+<!-- darwin             ansible_host=192.168.0.16           mac_ethernet=                       numeral=16   -->  
+erdos                   ansible_host=192.168.0.17           mac_ethernet=70:71:BC:57:F3:1D      numeral=17           
+noether                 ansible_host=192.168.0.18           mac_ethernet=00:0F:EA:B5:29:53      numeral=18
+lamarr                  ansible_host=192.168.0.19           mac_ethernet=70:71:BC:57:F3:18      numeral=19
 
+[rede_interna:children]
+clientes
+proccm
 
 [pcs:children]
 servidores

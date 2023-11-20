@@ -1,0 +1,1264 @@
+# Localização do arquivo inicial de pré-configuração:
+network-preseed	preseed/url	string	
+# for internal use; can be preseeded
+d-i	debian-installer/add-kernel-opts	string	
+# Teste de integridade falhou
+d-i	cdrom-checker/mismatch	error	
+# Diretório do repositório Debian no espelho de rede:
+choose-mirror-bin	mirror/ftp/directory	string	/debian/
+# for internal use; can be preseeded
+netcfg	netcfg/enable	boolean	true
+# Tipo de rede sem fio:
+# Choices: Rede em modo infraestrutura (gerenciada), Rede em modo ad-hoc (ponto a ponto)
+netcfg	netcfg/wireless_adhoc_managed	select	Infrastructure (Managed) network
+# 
+# Choices: Brasil, Portugal, outros
+d-i	localechooser/shortlist/pt	select	
+# Falha ao montar o disquete
+d-i	save-logs/floppy_mount_failed	error	
+# 
+# Choices: Belgium, Canada, France, Luxembourg, Switzerland, other
+d-i	localechooser/shortlist/fr	select	
+# Erro na entrada da frase secreta
+partman-crypto	partman-crypto/passphrase-mismatch	error	
+# Nome de máquina do espelho do repositório Debian:
+choose-mirror-bin	mirror/ftp/hostname	string	mirror
+# Falha ao apagar dados em 
+partman-crypto	partman-crypto/crypto_erase_failed	error	
+# Continuar a instalação no idioma selecionado?
+d-i	localechooser/translation/warn-light	boolean	true
+# Usar configuração não recomendada de /boot com sistema de arquivos JFS?
+partman-jfs	partman-jfs/jfs_boot	boolean	false
+# Informação sobre proxy HTTP (deixe em branco para nenhum):
+choose-mirror-bin	mirror/http/proxy	string	
+# A instalação do LILO falhou. Continuar mesmo assim?
+lilo-installer	lilo-installer/apt-install-failed	boolean	true
+# Dispositivo RAID via software a ser excluído:
+# Choices: 
+partman-md	partman-md/deletemenu	select	
+# Opções de montagem:
+# Choices: 
+partman-basicfilesystems	partman-basicfilesystems/mountoptions	multiselect	
+# Nenhum cliente DHCP encontrado
+netcfg	netcfg/no_dhcp_client	error	
+# Servidor web iniciado
+d-i	save-logs/httpd_running	note	
+# Falha ao copiar arquivo a partir do CD-ROM. Tentar novamente?
+d-i	retriever/cdrom/error	boolean	true
+# Novo tamanho de partição:
+partman-partitioning	partman-partitioning/new_partition_size	string	70.0 GB
+# Endereço ponto-a-ponto:
+netcfg	netcfg/get_pointopoint	string	
+# 
+# Choices: 
+partman-base	partman/exception_handler	select	
+# Senha em branco
+partman-iscsi	partman-iscsi/login/empty_password	error	
+# "Locale" do sistema:
+# Choices: 
+d-i	debian-installer/locale	select	pt_BR.UTF-8
+# Selecione o disco a ser particionado:
+# Choices: 
+partman-auto	partman-auto/select_disk	select	
+# País de origem para o teclado:
+# Choices: 
+d-i	keyboard-configuration/layout	select	
+# Impossível configurar o GRUB
+grub-installer	grub-installer/sataraid-error	error	
+# Dispositivos a adicionar ao grupo de volumes:
+# Choices: 
+partman-lvm	partman-lvm/vgextend_parts	multiselect	
+# Partição em uso
+partman-base	partman-base/partlocked	error	
+# for internal use; can be preseeded
+partman-base	partman/default_filesystem	string	ext4
+# Criar uma conta de usuário normal agora?
+user-setup-udeb	passwd/make-user	boolean	true
+# Você deseja continuar com o particionamento?
+partman-target	partman-target/mount_failed	boolean	true
+# 
+partman-base	partman/exception_handler_note	note	
+# for internal use only
+d-i	debconf/frontend	string	
+# Dispositivo no qual instalar o carregador de inicialização:
+# Choices: Informar manualmente o dispositivo, /dev/sda  (ata-ST3250310AS_6RY8YLGZ), /dev/sdb  (usb-Kingston_DT_101_G2_0019B9087CD7EB20E51B0027-0:0)
+grub-installer	grub-installer/choose_bootdev	select	/dev/sda
+# Mapa de teclado a ser usado:
+# Choices: Inglês Americano, Albanês, Árabe, Asturiano, Bangladesh, Bielorrusso, Bengali, Belga, Bósnio, Português Brasileiro, Inglês Britânico, Búlgaro (layout BDS), Búlgaro (layout fonético), Birmanês, Francês Canadense, Multilinguagem canadense, Catalão, Chinês, Croata, Tcheco, Dinamarquês, Holandês, Dvorak, Butanês, Esperanto, Estoniano, Etíope, Finlandês, Francês, Georgiano, Alemão, Grego, Guzerate, Gurmukhi, Hebraico, Hindi, Húngaro, Islandês, Irlandês, Italiano, Japonês, Canarês, Cazaque, Khmer, Quirguiz, Coreano, Curdo (layout F), Curdo (layout Q), Laosiano, Latino Americano, Letão, Lituano, Macedônio, Malaiala, Nepali, Sami Setentrional, Norueguês, Persa, Filipino, Polonês, Português, Punjabi, Romeno, Russo, Sérvio (cirílico), Sindi, Sinhala (cingalês), Eslovaco, Esloveno, Espanhol, Sueco, Francês Suíço, Alemão Suíço, Tajique, Tâmil, Télugo, Tailandês, Tibetano, Turco (layout F), Turco (layout Q), Ucraniano, Uigur, Vietnamita
+d-i	keyboard-configuration/xkb-keymap	select	br
+# Erro inesperado na criação de grupo de volumes
+partman-auto-lvm	partman-auto-lvm/vg_create_error	error	
+# Realmente excluir este dispositivo RAID via software?
+partman-md	partman-md/deleteverify	boolean	false
+# Falha ao instalar o sistema básico
+bootstrap-base	base-installer/debootstrap-failed	error	
+# CD-ROM detectado
+d-i	cdrom-detect/success	note	
+# Você deseja voltar ao menu de particionamento?
+partman-basicfilesystems	partman-basicfilesystems/no_mount_point	boolean	
+# Erro na inicialização do volume físico
+partman-lvm	partman-lvm/pvcreate_error	error	
+# zone
+# Choices: Santiago, Ilha de Páscoa
+tzsetup-udeb	tzsetup/country/CL	select	America/Santiago
+# Erro reduzindo o grupo de volumes
+partman-lvm	partman-lvm/vgreduce_error	error	
+# Frase secreta vazia
+partman-crypto	partman-crypto/passphrase-empty	error	
+# state
+# Choices: Território da Capital Australiana, Nova Gales do Sul, Victoria, Território do Norte, Queensland, Austrália Meridional, Tasmânia, Austrália Ocidental, Autoestrada de Eyre, Condado de Yancowinna, Ilha de Lord Howe
+tzsetup-udeb	tzsetup/country/AU	select	Australia/Canberra
+# A partição inicia em  e finaliza em .
+partman-base	partman/show_partition_chs	note	
+# for internal use; can be preseeded
+grub-installer	grub-installer/skip	boolean	false
+# Instalar o carregador de inicialização GRUB no disco Serial ATA RAID?
+grub-installer	grub-installer/sataraid	boolean	true
+# Porcentagem dos blocos do sistema de arquivos reservados para o superusuário:
+partman-basicfilesystems	partman-basicfilesystems/specify_reserved	string	
+# city
+# Choices: Almaty, Qyzylorda, Aqtobe, Atyrau, Oral
+tzsetup-udeb	tzsetup/country/KZ	select	Asia/Almaty
+# Um passo da instalação falhou
+d-i	debian-installer/main-menu/item-failure	error	
+# country code or "manual" (for internal use)
+choose-mirror-bin	mirror/country	string	BR
+# Realmente excluir o grupo de volume?
+partman-lvm	partman-lvm/vgdelete_confirm	boolean	true
+# Erro na criação de um novo volume lógico
+partman-lvm	partman-lvm/lvcreate_exists	error	
+# for internal use only
+# Choices: stable, testing, unstable
+d-i	cdrom/suite	select	stable
+# for internal use; can be preseeded
+apt-cdrom-setup	apt-setup/disable-cdrom-entries	boolean	false
+# 
+# Choices: Serbia, Montenegro, other
+d-i	localechooser/shortlist/sr	select	
+# Sistema de arquivos separado não permitido aqui
+partman-target	partman-target/must_be_on_root	error	
+# Dispositivo no qual instalar o carregador de inicialização:
+grub-installer	grub-installer/bootdev	string	
+# Tentar montar o CD-ROM novamente?
+d-i	cdrom-detect/retry	boolean	true
+# Erro do debootstrap
+bootstrap-base	base-installer/debootstrap/error/nogetrelsig	error	
+# 
+# Choices: Samoa Americana, Austrália, Ilhas Cook, Fiji, Polinésia Francesa, Guam, Kiribati, Ilhas Marshall, Micronésia\, Estados Federados da, Nauru, Nova Caledônia, Nova Zelândia, Niue, Ilha Norfolk, Ilhas Marianas do Norte, Palau, Papua-Nova Guiné, Pitcairn, Samoa, Ilhas Salomão, Toquelau, Tonga, Tuvalu, Ilhas Menores Distantes dos Estados Unidos, Vanuatu, Wallis e Futuna
+d-i	localechooser/countrylist/Oceania	select	
+# Rótulos idênticos para dois sistemas de arquivos
+partman-target	partman-target/same_label	error	
+# A seleção de idioma não é mais possível
+d-i	localechooser/translation/no-select	note	
+# Você tem certeza que deseja sair agora?
+d-i	di-utils-reboot/really_reboot	boolean	false
+# 
+# Choices: Albânia, Andorra, Armênia, Áustria, Azerbaidjão, Bielo-Rússia, Bélgica, Bósnia-Herzegóvina, Bulgária, Croácia, Chipre, República Tcheca, Dinamarca, Estônia, Ilhas Faroe, Finlândia, França, Geórgia, Alemanha, Gibraltar, Grécia, Groenlândia, Guernsey, Santa Sé (Cidade-Estado do Vaticano), Hungria, Islândia, Irlanda, Ilha de Man, Itália, Jersey, Letônia, Liechtenstein, Lituânia, Luxemburgo, Macedônia\, República da, Malta, Moldávia, Mônaco, Montenegro, Países Baixos, Noruega, Polônia, Portugal, Romênia, Federação Russa, São Marino, Sérvia, Eslováquia, Eslovênia, Espanha, Svalbard e a Ilha de Jan Mayen, Suécia, Suíça, Ucrânia, Reino Unido, Ilhas Åland
+d-i	localechooser/countrylist/Europe	select	
+# Mídia UNetbootin detectada
+d-i	cdrom-detect/unetbootin_detected	note	
+# Retornar ao menu e configurar a opção inicializável?
+partman-ext3	partman-ext3/boot_not_bootable	boolean	
+# Continuar sem uma rota padrão?
+netcfg	netcfg/no_default_route	boolean	
+# Falha ao apagar dados em 
+partman-crypto	partman-crypto/plain_erase_failed	error	
+# Nenhum sistema de arquivos montado em /target
+base-installer	base-installer/no_target_mounted	error	
+# Escolha um passo da instalação:
+# Choices: 
+d-i	debian-installer/missing-provide	select	${DEFAULT}
+# Método de particionamento:
+# Choices: 
+partman-auto	partman-auto/automatically_partition	select	
+# 
+d-i	debian-installer/shell-plugin	terminal	
+# for internal use; can be preseeded
+d-i	rescue/enable	boolean	false
+# Pontos de montagem idênticos para dois sistemas de arquivos
+partman-target	partman-target/same_mountpoint	error	
+# Falha na configuração de volumes criptografados
+partman-crypto	partman-crypto/commit_failed	error	
+# for internal use; can be preseeded
+disk-detect	disk-detect/multipath/enable	boolean	false
+# for internal use
+d-i	keyboard-configuration/optionscode	string	
+# Você tem certeza que deseja uma partição lógica inicializável?
+partman-partitioning	partman-partitioning/bootable_logical	boolean	false
+# for internal use
+d-i	keyboard-configuration/variantcode	string	
+# 
+# Choices: Território Britânico do Oceano Índico, Ilha Christmas, Ilhas Cocos, Comores, Territórios Franceses do Sul, Ilha Heard e Ilhas McDonald, Madagascar, Maldivas, Maurício, Maiote, Reunião, Seychelles
+d-i	localechooser/countrylist/Indian_Ocean	select	
+# for internal use; can be preseeded
+network-preseed	preseed/url/checksum	string	
+# Continuar com o particionamento?
+partman-partitioning	partman-partitioning/unsupported_label	boolean	false
+# Ponto de montagem para esta partição:
+# Choices: /dos, /windows, Informar manualmente, Não montar
+partman-basicfilesystems	partman-basicfilesystems/fat_mountpoint	select	
+# Manter as opções padrão de teclado ()?
+d-i	keyboard-configuration/unsupported_options	boolean	true
+# Ações de configuração RAID via software
+# Choices: Criar dispositivo MD, Excluir dispositivo MD, Finalizar
+partman-md	partman-md/mainmenu	select	
+# Tipo de hash de chave criptográfica para esta partição:
+# Choices: 
+partman-crypto	partman-crypto/keyhash	select	
+# Protocolo para baixar arquivos:
+# Choices: http, https, ftp
+choose-mirror-bin	mirror/protocol	select	http
+# Método de criptografia para esta partição:
+# Choices: 
+partman-crypto	partman-crypto/crypto_type	select	
+# for internal use; can be preseeded
+d-i	debian-installer/theme	string	
+# Impossível configurar o GRUB
+grub-installer	grub-installer/update-grub-failed	error	
+# Dispositivos reserva para o agrupamento RAID:
+# Choices: 
+partman-md	partman-md/raidsparedevs	multiselect	
+# for internal use; can be preseeded
+# Choices: traditional, label, uuid
+partman-target	partman/mount_style	select	uuid
+# Drivers a serem incluídos no initrd:
+# Choices: genérico: inclui todos os drivers disponíveis, direcionado: só inclui drivers necessários para este sistema
+bootstrap-base	base-installer/initramfs-tools/driver-policy	select	most
+# Erro do debootstrap
+bootstrap-base	base-installer/debootstrap/error/missingrelentry	error	
+# Nenhum nome de grupo de volumes informado
+partman-lvm	partman-lvm/vgcreate_nonamegiven	error	
+# for internal use; can be preseeded
+ethdetect	ethdetect/prompt_missing_firmware	boolean	true
+# for internal use; can be preseeded
+netcfg	netcfg/hostname	string	
+# Ponto de montagem para esta partição:
+partman-basicfilesystems	partman-basicfilesystems/mountpoint_manual	string	
+# Tecla para funcionar como AltGr:
+# Choices: O padrão para o layout de teclado, Sem tecla AltGr, Alt Direito (AltGr), Control Direito, Tecla Logo Direita, Tecla Menu, Alt Esquerdo, Tecla Logo Esquerda, Tecla Enter do teclado numérico, Ambas teclas Logo, Ambas teclas Alt
+d-i	keyboard-configuration/altgr	select	The default for the keyboard layout
+# Algoritmo de geração de vetor de inicialização para esta partição:
+# Choices: 
+partman-crypto	partman-crypto/ivalgorithm	select	
+# Falha ao processar o arquivo de pré-configuração
+d-i	preseed/load_error	error	
+# Checksum error
+d-i	preseed/checksum_error	error	
+# Servidor web iniciado, mas rede não está em funcionamento
+d-i	save-logs/no_network	note	
+# Manter o layout de particionamento atual e configurar RAID?
+partman-md	partman-md/confirm_nochanges	boolean	false
+# for internal use; can be preseeded
+apt-setup-udeb	apt-setup/multiarch	string	
+# Escolha o software a ser instalado:
+# Choices: ambiente de área de trabalho no Debian, ... GNOME, ... Xfce, ... KDE, ... Cinnamon, ... MATE, ... LXDE, servidor web, servidor de impressão, servidor SSH, utilitários de sistema padrão
+d-i	tasksel/first	multiselect	servidor web, servidor SSH, utilitários de sistema padrão
+# Dispositivo em uso
+partman-base	partman-base/devicelocked	error	
+# for internal use; can be preseeded
+d-i	preseed/file	string	
+# O login iSCSI falhou
+partman-iscsi	partman-iscsi/login/failed	error	
+# 
+# Choices: Antártida
+d-i	localechooser/countrylist/Antarctica	select	
+# Frase secreta inválida
+netcfg	netcfg/invalid_pass	error	
+# Placa de rede (Ethernet) não encontrada
+ethdetect	ethdetect/cannot_find	error	
+# Alvos iSCSI em :
+# Choices: 
+partman-iscsi	partman-iscsi/login/targets	multiselect	
+# 
+# Choices: Finland, Sweden, other
+d-i	localechooser/shortlist/sv	select	
+# Não foi possível instalar o sistema básico
+bootstrap-base	base-installer/cannot_install	error	
+# 
+# Choices: Spain, France, other
+d-i	localechooser/shortlist/eu	select	
+# Erro na criação do grupo de volumes
+partman-lvm	partman-lvm/vgcreate_error	error	
+# Dispositivos ativos para o agrupamento RAID:
+# Choices: 
+partman-md	partman-md/raiddevs	multiselect	
+# for internal use; can be preseeded
+partman-partitioning	partman-partitioning/default_label	string	
+# Tempo de espera (em segundos) para detecção da conexão:
+netcfg	netcfg/link_wait_timeout	string	3
+# O tamanho informado é muito grande
+partman-partitioning	partman-partitioning/big_new_size	error	
+# Falha ao carregar componente do instalador
+d-i	anna/install_failed	error	
+# for internal use; can be preseeded
+d-i	preseed/late_command	string	
+# Dispositivos para o novo grupo de volumes:
+# Choices: 
+partman-lvm	partman-lvm/vgcreate_parts	multiselect	
+# Falha na configuração da criptografia
+partman-crypto	partman-crypto/crypto_root_needs_boot	error	
+# Nome do grupo de volumes:
+partman-lvm	partman-lvm/vgcreate_name	string	
+# Dispositivos a serem criptografados:
+# Choices: 
+partman-crypto	partman-crypto/create/partitions	multiselect	
+# Criptografia para esta partição:
+# Choices: 
+partman-crypto	partman-crypto/cipher	select	
+# 
+# Choices: China, Singapore, Taiwan, Hong Kong, other
+d-i	localechooser/shortlist/zh_TW	select	
+# O tamanho informado é muito pequeno
+partman-partitioning	partman-partitioning/small_new_size	error	
+# Falha ao criar um sistema de arquivos
+partman-basicfilesystems	partman-basicfilesystems/create_failed	error	
+# Gravar uma nova tabela de partições vazia?
+partman-partitioning	partman-partitioning/confirm_write_new_label	boolean	false
+# Não há suporte para o sistema de arquivos raiz btrfs sem /boot separado
+partman-btrfs	partman-btrfs/btrfs_root	error	
+# for internal use; can be preseeded
+d-i	preseed/include_command	string	
+# Alvo para instalação do LILO:
+# Choices: : agrupamento RAID via software, Outra opção (Avançado)
+lilo-installer	lilo-installer/bootdev_raid	select	
+# "locale"
+d-i	localechooser/help/locale	note	
+# Opções de criptografia necessárias faltando
+partman-crypto	partman-crypto/options_missing	error	
+# Diretório do repositório Debian no espelho de rede:
+choose-mirror-bin	mirror/http/directory	string	/debian/
+# Remover dados de volumes lógicos existentes?
+partman-lvm	partman-lvm/device_remove_lvm	boolean	false
+# Voltar ao menu e corrigir esse problema?
+partman-basicfilesystems	partman-basicfilesystems/boot_not_first_partition	boolean	
+# Nenhum grupo de volumes encontrado
+partman-lvm	partman-lvm/vgdelete_novg	error	
+# Realmente apagar os dados em ?
+partman-crypto	partman-crypto/plain_warn_erase	boolean	false
+# 
+# Choices: Italy, Switzerland, other
+d-i	localechooser/shortlist/it	select	
+# 
+# Choices: Russian Federation, Ukraine, other
+d-i	localechooser/shortlist/ru	select	
+# Escolha o próximo passo do processo de instalação:
+# Choices: Escolher idioma/Choose language, Access software for a blind person using a braille display, Configure o teclado, Detectar e montar o CD-ROM, Carregar componentes do instalador a partir do CD, Detectar hardware de rede, Configurar a rede, Configurar usuários e senhas, Configurar o relógio, Detectar discos, Particionar discos, Instalar o sistema básico, Configurar o gerenciador de pacotes, Selecionar e instalar software, Instalar o carregador de inicialização GRUB em um disco rígido, Instalar o carregador de inicialização LILO em um disco rígido, Continuar sem carregador de inicialização, Finalizar a instalação, Mudar prioridade debconf, Verificar a integridade do(s) CD-ROM(s), Gravar logs de depuração, Executar um shell, Ejetar um CD do drive, Abortar a instalação
+d-i	debian-installer/main-menu	select	Finalizar a instalação
+# Selecionar manualmente um módulo e dispositivo de CD-ROM?
+d-i	cdrom-detect/manual_config	boolean	true
+# Erro ao informar a senha
+user-setup-udeb	user-setup/password-mismatch	error	
+# Problema de configuração do apt
+apt-cdrom-setup	apt-setup/cdrom/failed	error	
+# location
+# Choices: Yap, Truk, Pohnpei, Kosrae
+tzsetup-udeb	tzsetup/country/FM	select	Pacific/Ponape
+# Usar programas não-livres ("non-free")?
+apt-mirror-setup	apt-setup/non-free	boolean	false
+# Driver requerido por sua placa Ethernet:
+# Choices: nenhuma placa de rede (ethernet), , nenhuma das acima
+ethdetect	ethdetect/module_select	select	no ethernet card
+# Endereços dos servidores de nomes:
+netcfg	netcfg/get_nameservers	string	
+# Nome completo para o novo usuário:
+user-setup-udeb	passwd/user-fullname	string	Conta admins
+# for internal use only
+user-setup-udeb	passwd/user-default-groups	string	audio cdrom dip floppy video plugdev netdev scanner bluetooth debian-tor lpadmin
+# Nome de usuário inválido
+user-setup-udeb	passwd/username-bad	error	
+# Falha ao criar uma área de troca (swap)
+partman-basicfilesystems	partman-basicfilesystems/create_swap_failed	error	
+# Rótulo para o sistema de arquivos nesta partição:
+partman-basicfilesystems	partman-basicfilesystems/choose_label	string	
+# Gateway:
+netcfg	netcfg/get_gateway	string	
+# Continuar com a instalação?
+partman-base	partman/confirm_nochanges	boolean	false
+# Método para alternância temporária entre as entradas nacional e Latin:
+# Choices: Sem alternador temporário, Ambas teclas Logo, Alt Direito (AltGr), Tecla Logo Direita, Alt Esquerdo, Tecla Logo Esquerda
+d-i	keyboard-configuration/switch	select	No temporary switch
+# Componentes do instalador a serem carregados:
+# Choices: choose-mirror: Choose mirror to install from (menu item), crypto-dm-modules-4.9.0-9-amd64-di: devicemapper crypto module, driver-injection-disk-detect: Detect OEM driver injection disks, espeakup-udeb: Configure the speech synthesizer voice, event-modules-4.9.0-9-amd64-di: Event support, fuse-modules-4.9.0-9-amd64-di: FUSE modules, load-media: Load installer components from removable media, lowmem: free memory for lowmem install, mbr-udeb: Master Boot Record for IBM-PC compatible computers, multipath-modules-4.9.0-9-amd64-di: Multipath support, nbd-modules-4.9.0-9-amd64-di: Network Block Device modules, network-console: Continue installation remotely using SSH, ntfs-modules-4.9.0-9-amd64-di: NTFS filesystem support, openssh-client-udeb: secure shell client for the Debian installer, parted-udeb: Manually partition a hard drive (parted), ppp-modules-4.9.0-9-amd64-di: PPP drivers, ppp-udeb: Point-to-Point Protocol (PPP) - package for Debian Installer, reiserfsprogs-udeb: User-level tools for ReiserFS filesystems, rescue-mode: mount requested partition and start a rescue shell, sound-modules-4.9.0-9-amd64-di: sound support, squashfs-modules-4.9.0-9-amd64-di: squashfs modules, udf-modules-4.9.0-9-amd64-di: UDF modules, virtio-modules-4.9.0-9-amd64-di: virtio modules
+d-i	anna/choose_modules	multiselect	
+# 
+# Choices: Afeganistão, Barein, Bangladesh, Butão, Brunei, Camboja, China, Hong Kong, Índia, Indonésia, Irã\, República Islâmica do, Iraque, Israel, Japão, Jordânia, Cazaquistão, Coreia\, República Popular Democrática da, Coreia\, República da, Kuwait, Quirguistão, República Popular Democrática do Laos, Líbano, Macau, Malásia, Mongólia, Myanmar, Nepal, Omã, Paquistão, Palestina\, Estado da, Filipinas, Catar, Arábia Saudita, Cingapura, Sri Lanka, República Árabe da Síria, Taiwan, Tadjiquistão, Tailândia, Timor Leste, Turquia, Turcomenistão, Emirados Árabes Unidos, Uzbequistão, Vietnã, Iêmen
+d-i	localechooser/countrylist/Asia	select	
+# RAID via software não disponível
+partman-md	partman-md/nomd	error	
+# Gostaria de tornar esta partição ativa?
+lilo-installer	lilo-installer/activate-part	boolean	true
+# 
+# Choices: Belgium, Germany, Italy, Liechtenstein, Luxembourg, Switzerland, Austria, other
+d-i	localechooser/shortlist/de	select	
+# for internal use; can be preseeded
+partman-auto-crypto	partman-auto-crypto/erase_disks	boolean	true
+# Erro lendo arquivo 'Release'
+d-i	cdrom-detect/no-release	error	
+# País para basear as configurações padrão de "locale":
+# Choices: Brasil${!TAB}-${!TAB}pt_BR.UTF-8, Portugal${!TAB}-${!TAB}pt_PT.UTF-8
+d-i	localechooser/preferred-locale	select	pt_BR.UTF-8
+# 
+# Choices: Belize, Costa Rica, El Salvador, Guatemala, Honduras, Nicarágua, Panamá
+d-i	localechooser/countrylist/Central_America	select	
+# Falha enquanto baixava a chave do repositório local:
+# Choices: Tentar novamente, Ignorar
+apt-setup-udeb	apt-setup/local/key-error	select	Retry
+# Continuar sem instalar um kernel?
+bootstrap-base	base-installer/kernel/skip-install	boolean	false
+# Erro na instalação do sistema básico
+bootstrap-base	base-installer/debootstrap/error-exitcode	error	
+# 
+# Choices: Curaçao
+d-i	localechooser/countrylist/other	select	
+# Chave WEP inválida
+netcfg	netcfg/invalid_wep	error	
+# Falha ao particionar o disco selecionado
+partman-auto-lvm	partman-auto-lvm/unusable_recipe	error	
+# 
+# Choices: China, Taiwan, Singapore, Hong Kong, other
+d-i	localechooser/shortlist/zh_CN	select	
+# Driver requerido por sua unidade de disco:
+# Choices: continuar sem nenhuma unidade de disco, , nenhuma das acima
+disk-detect	disk-detect/module_select	select	continue with no disk drive
+# Erro do debootstrap
+bootstrap-base	base-installer/debootstrap/fallback-error	error	
+# Definindo variáveis de firmware para inicialização automática
+nobootloader	nobootloader/confirmation_powerpc_chrp_pegasos	note	
+# Gerenciamento de Volumes Lógicos
+partman-lvm	partman-lvm/help	note	
+# Continuar a instalação no idioma selecionado?
+d-i	localechooser/translation/warn-severe	boolean	false
+# "Locales" adicionais:
+# Choices: aa_DJ.UTF-8, aa_DJ, aa_ER, aa_ER@saaho, aa_ET, af_ZA.UTF-8, af_ZA, ak_GH, am_ET, an_ES.UTF-8, an_ES, anp_IN, ar_AE.UTF-8, ar_AE, ar_BH.UTF-8, ar_BH, ar_DZ.UTF-8, ar_DZ, ar_EG.UTF-8, ar_EG, ar_IN, ar_IQ.UTF-8, ar_IQ, ar_JO.UTF-8, ar_JO, ar_KW.UTF-8, ar_KW, ar_LB.UTF-8, ar_LB, ar_LY.UTF-8, ar_LY, ar_MA.UTF-8, ar_MA, ar_OM.UTF-8, ar_OM, ar_QA.UTF-8, ar_QA, ar_SA.UTF-8, ar_SA, ar_SD.UTF-8, ar_SD, ar_SS, ar_SY.UTF-8, ar_SY, ar_TN.UTF-8, ar_TN, ar_YE.UTF-8, ar_YE, ayc_PE, az_AZ, as_IN, ast_ES.UTF-8, ast_ES, be_BY.UTF-8, be_BY, be_BY@latin, bem_ZM, ber_DZ, ber_MA, bg_BG.UTF-8, bg_BG, bhb_IN.UTF-8, bho_IN, bn_BD, bn_IN, bo_CN, bo_IN, br_FR.UTF-8, br_FR, br_FR@euro, brx_IN, bs_BA.UTF-8, bs_BA, byn_ER, ca_AD.UTF-8, ca_AD, ca_ES.UTF-8, ca_ES, ca_ES@euro, ca_ES.UTF-8@valencia, ca_ES@valencia, ca_FR.UTF-8, ca_FR, ca_IT.UTF-8, ca_IT, ce_RU, chr_US, cmn_TW, crh_UA, cs_CZ.UTF-8, cs_CZ, csb_PL, cv_RU, cy_GB.UTF-8, cy_GB, da_DK.UTF-8, da_DK, de_AT.UTF-8, de_AT, de_AT@euro, de_BE.UTF-8, de_BE, de_BE@euro, de_CH.UTF-8, de_CH, de_DE.UTF-8, de_DE, de_DE@euro, de_IT.UTF-8, de_IT, de_LI.UTF-8, de_LU.UTF-8, de_LU, de_LU@euro, doi_IN, dv_MV, dz_BT, el_GR.UTF-8, el_GR, el_CY.UTF-8, el_CY, en_AG, en_AU.UTF-8, en_AU, en_BW.UTF-8, en_BW, en_CA.UTF-8, en_CA, en_DK.UTF-8, en_DK.ISO-8859-15, en_DK, en_GB.UTF-8, en_GB, en_GB.ISO-8859-15, en_HK.UTF-8, en_HK, en_IE.UTF-8, en_IE, en_IE@euro, en_IL, en_IN, en_NG, en_NZ.UTF-8, en_NZ, en_PH.UTF-8, en_PH, en_SG.UTF-8, en_SG, en_US.UTF-8, en_US, en_US.ISO-8859-15, en_ZA.UTF-8, en_ZA, en_ZM, en_ZW.UTF-8, en_ZW, eo, es_AR.UTF-8, es_AR, es_BO.UTF-8, es_BO, es_CL.UTF-8, es_CL, es_CO.UTF-8, es_CO, es_CR.UTF-8, es_CR, es_CU, es_DO.UTF-8, es_DO, es_EC.UTF-8, es_EC, es_ES.UTF-8, es_ES, es_ES@euro, es_GT.UTF-8, es_GT, es_HN.UTF-8, es_HN, es_MX.UTF-8, es_MX, es_NI.UTF-8, es_NI, es_PA.UTF-8, es_PA, es_PE.UTF-8, es_PE, es_PR.UTF-8, es_PR, es_PY.UTF-8, es_PY, es_SV.UTF-8, es_SV, es_US.UTF-8, es_US, es_UY.UTF-8, es_UY, es_VE.UTF-8, es_VE, et_EE.UTF-8, et_EE, et_EE.ISO-8859-15, eu_ES.UTF-8, eu_ES, eu_ES@euro, eu_FR.UTF-8, eu_FR, eu_FR@euro, fa_IR, ff_SN, fi_FI.UTF-8, fi_FI, fi_FI@euro, fil_PH, fo_FO.UTF-8, fo_FO, fr_BE.UTF-8, fr_BE, fr_BE@euro, fr_CA.UTF-8, fr_CA, fr_CH.UTF-8, fr_CH, fr_FR.UTF-8, fr_FR, fr_FR@euro, fr_LU.UTF-8, fr_LU, fr_LU@euro, fur_IT, fy_NL, fy_DE, ga_IE.UTF-8, ga_IE, ga_IE@euro, gd_GB.UTF-8, gd_GB, gez_ER, gez_ER@abegede, gez_ET, gez_ET@abegede, gl_ES.UTF-8, gl_ES, gl_ES@euro, gu_IN, gv_GB.UTF-8, gv_GB, ha_NG, hak_TW, he_IL.UTF-8, he_IL, hi_IN, hne_IN, hr_HR.UTF-8, hr_HR, hsb_DE.UTF-8, hsb_DE, ht_HT, hu_HU.UTF-8, hu_HU, hy_AM, hy_AM.ARMSCII-8, ia_FR, id_ID.UTF-8, id_ID, ig_NG, ik_CA, is_IS.UTF-8, is_IS, it_CH.UTF-8, it_CH, it_IT.UTF-8, it_IT, it_IT@euro, iu_CA, ja_JP.UTF-8, ja_JP.EUC-JP, ka_GE.UTF-8, ka_GE, kk_KZ.UTF-8, kk_KZ, kl_GL.UTF-8, kl_GL, km_KH, kn_IN, ko_KR.UTF-8, ko_KR.EUC-KR, kok_IN, ks_IN, ks_IN@devanagari, ku_TR.UTF-8, ku_TR, kw_GB.UTF-8, kw_GB, ky_KG, lb_LU, lg_UG.UTF-8, lg_UG, li_BE, li_NL, lij_IT, ln_CD, lo_LA, lt_LT.UTF-8, lt_LT, lv_LV.UTF-8, lv_LV, lzh_TW, mag_IN, mai_IN, mg_MG.UTF-8, mg_MG, mhr_RU, mi_NZ.UTF-8, mi_NZ, mk_MK.UTF-8, mk_MK, ml_IN, mn_MN, mni_IN, mr_IN, ms_MY.UTF-8, ms_MY, mt_MT.UTF-8, mt_MT, my_MM, nan_TW, nan_TW@latin, nb_NO.UTF-8, nb_NO, nds_DE, nds_NL, ne_NP, nhn_MX, niu_NU, niu_NZ, nl_AW, nl_BE.UTF-8, nl_BE, nl_BE@euro, nl_NL.UTF-8, nl_NL, nl_NL@euro, nn_NO.UTF-8, nn_NO, nr_ZA, nso_ZA, oc_FR.UTF-8, oc_FR, om_ET, om_KE.UTF-8, om_KE, or_IN, os_RU, pa_IN, pa_PK, pap_AW, pap_CW, pl_PL.UTF-8, pl_PL, ps_AF, pt_BR, pt_PT.UTF-8, pt_PT, pt_PT@euro, quz_PE, raj_IN, ro_RO.UTF-8, ro_RO, ru_RU.UTF-8, ru_RU.KOI8-R, ru_RU, ru_RU.CP1251, ru_UA.UTF-8, ru_UA, rw_RW, sa_IN, sat_IN, sc_IT, sd_IN, sd_IN@devanagari, se_NO, sgs_LT, shs_CA, si_LK, sid_ET, sk_SK.UTF-8, sk_SK, sl_SI.UTF-8, sl_SI, so_DJ.UTF-8, so_DJ, so_ET, so_KE.UTF-8, so_KE, so_SO.UTF-8, so_SO, sq_AL.UTF-8, sq_AL, sq_MK, sr_ME, sr_RS, sr_RS@latin, ss_ZA, st_ZA.UTF-8, st_ZA, sv_FI.UTF-8, sv_FI, sv_FI@euro, sv_SE.UTF-8, sv_SE, sv_SE.ISO-8859-15, sw_KE, sw_TZ, szl_PL, ta_IN, ta_LK, tcy_IN.UTF-8, te_IN, tg_TJ.UTF-8, tg_TJ, th_TH.UTF-8, th_TH, the_NP, ti_ER, ti_ET, tig_ER, tk_TM, tl_PH.UTF-8, tl_PH, tn_ZA, tr_CY.UTF-8, tr_CY, tr_TR.UTF-8, tr_TR, ts_ZA, tt_RU, tt_RU@iqtelif, ug_CN, uk_UA.UTF-8, uk_UA, unm_US, ur_IN, ur_PK, uz_UZ.UTF-8, uz_UZ, uz_UZ@cyrillic, ve_ZA, vi_VN, wa_BE.UTF-8, wa_BE, wa_BE@euro, wae_CH, wal_ET, wo_SN, xh_ZA.UTF-8, xh_ZA, yi_US.UTF-8, yi_US, yo_NG, yue_HK, zh_CN.UTF-8, zh_CN.GB18030, zh_CN.GBK, zh_CN, zh_HK.UTF-8, zh_HK, zh_SG.UTF-8, zh_SG.GBK, zh_SG, zh_TW.UTF-8, zh_TW.EUC-TW, zh_TW, zu_ZA.UTF-8, zu_ZA
+d-i	localechooser/supported-locales	multiselect	
+# ESSID da rede sem fio para :
+netcfg	netcfg/wireless_essid	string	
+# Falha na configuração da criptografia
+partman-crypto	partman-crypto/crypto_boot_not_possible	error	
+# for internal use; can be preseeded
+apt-setup-udeb	apt-setup/security_host	string	security.debian.org
+# Erro do debootstrap
+bootstrap-base	base-installer/no_codename	error	
+# for internal use; can be preseeded
+d-i	hw-detect/load-ide	boolean	false
+# for internal use; can be preseeded
+partman-auto	partman-auto/expert_recipe	string	
+# Insira um disquete formatado na unidade de disquetes
+d-i	save-logs/insert_floppy	note	
+# Partição EFI muito pequena
+partman-efi	partman-efi/too_small_efi	error	
+# O que fazer com este dispositivo:
+# Choices: 
+partman-base	partman/storage_device	select	
+# Nenhum dispositivo selecionado
+partman-crypto	partman-crypto/create/nosel	error	
+# Ocorreu uma falha enquanto um arquivo era baixado:
+# Choices: Tentar novamente, Mudar espelho de rede, Ignorar
+apt-mirror-setup	apt-setup/mirror/error	select	Retry
+# Ponto de montagem inválido
+partman-basicfilesystems	partman-basicfilesystems/bad_mountpoint	error	
+# Extensão "terminal" não disponível
+d-i	debian-installer/terminal-plugin-unavailable	error	
+# Escrever as mudanças nos discos?
+partman-base	partman/confirm_nooverwrite	boolean	false
+# Falha ao particionar o disco selecionado
+partman-auto	partman-auto/autopartitioning_failed	error	
+# ESSID da rede sem fio para :
+netcfg	netcfg/wireless_essid_again	string	
+# Volume lógico:
+# Choices: 
+partman-lvm	partman-lvm/lvdelete_lvnames	select	
+# Nenhum nome de volume lógico informado
+partman-lvm	partman-lvm/lvcreate_nonamegiven	error	
+# Falha na operação de redimensionamento
+partman-partitioning	partman-partitioning/new_size_commit_failed	error	
+# Continuar a instalar os componentes de criptografia mesmo com memória insuficiente?
+partman-crypto	partman-crypto/install_udebs_low_mem	boolean	
+# Layout do agrupamento RAID10:
+partman-md	partman-md/raid10layout	string	n2
+# Nenhum grupo de volumes encontrado
+partman-lvm	partman-lvm/lvcreate_nofreevg	error	
+# Continuar com a instalação em alvo não limpo?
+base-installer	base-installer/use_unclean_target	boolean	true
+# País, território ou área:
+# Choices: Brasil, Portugal, outro
+d-i	localechooser/shortlist	select	BR
+# Erro do debootstrap
+bootstrap-base	base-installer/debootstrap/error/invalidrel	error	
+# Teste de integridade realizado com sucesso
+d-i	cdrom-checker/passed	note	
+# Grupo de volumes a ser excluído:
+# Choices: 
+partman-lvm	partman-lvm/vgdelete_names	select	
+# Impossível configurar o GRUB
+grub-installer	grub-installer/multipath-error	error	
+# Ferramenta a ser usada para gerar o initrd de inicialização:
+# Choices: 
+bootstrap-base	base-installer/initramfs/generator	select	
+# Usar software da área 'contrib'?
+apt-mirror-setup	apt-setup/contrib	boolean	false
+# Erro estendendo o grupo de volumes
+partman-lvm	partman-lvm/vgextend_error	error	
+# zone
+# Choices: Tarawa (Ilhas Gilbert), Enderbury (Ilhas Fênix), Kiritimati (Ilhas da Linha)
+tzsetup-udeb	tzsetup/country/KI	select	Pacific/Tarawa
+# Checar integridade do CD-ROM?
+d-i	cdrom-checker/start	boolean	false
+# Falha na configuração RAID
+partman-md	partman-md/commit_failed	error	
+# Nenhum volume físico selecionado
+partman-lvm	partman-lvm/vgcreate_nosel	error	
+# for internal use; can be preseeded
+netcfg	netcfg/disable_autoconfig	boolean	false
+# zone
+# Choices: Terra nova, Atlântico, Oriental, Central, Saskatchewan Oriental, Saskatchewan, Montanha, Pacífico
+tzsetup-udeb	tzsetup/country/CA	select	Canada/Eastern
+# País do espelho do repositório Debian:
+# Choices: digitar informação manualmente, Argentina, Armênia, Austrália, Áustria, Bielo-Rússia, Bélgica, Brasil, Bulgária, Canadá, Chile, China, Costa Rica, Croácia, Czechia, Dinamarca, El Salvador, Estônia, Finlândia, França, Polinésia Francesa, Geórgia, Alemanha, Grécia, Hong Kong, Hungria, Índia, Indonésia, Irã\, República Islâmica do, Israel, Itália, Japão, Cazaquistão, Quênia, Coreia\, República da, Letônia, Lituânia, Luxemburgo, Macedônia\, República da, México, Moldávia, Países Baixos, Nova Caledônia, Nova Zelândia, Noruega, Filipinas, Polônia, Portugal, Romênia, Federação Russa, Reunião, Sérvia, Cingapura, Eslováquia, Eslovênia, África do Sul, Espanha, Suécia, Suíça, Taiwan, Tailândia, Turquia, Ucrânia, Reino Unido, Estados Unidos, Uruguai, Vietnam
+choose-mirror-bin	mirror/http/countries	select	BR
+# Nome do volume lógico:
+partman-lvm	partman-lvm/lvcreate_name	string	
+# location
+# Choices: Taiti (Ilhas da Sociedade), Ilhas Marquesas, Ilhas Gambier
+tzsetup-udeb	tzsetup/country/PF	select	Pacific/Tahiti
+# Selecione um estado ou província para definir seu fuso horário:
+# Choices: Acre, Alagoas, Amazonas, Amapá, Bahia, Ceará, Distrito Federal, Espírito Santo, Fernando de Noronha, Goiás, Maranhão, Minas Gerais, Mato Grosso do Sul, Mato Grosso, Pará, Paraíba, Pernambuco, Piauí, Paraná, Rio de Janeiro, Rio Grande do Norte, Rondônia, Roraima, Rio Grande do Sul, Santa Catarina, Sergipe, São Paulo, Tocantins
+tzsetup-udeb	time/zone	select	America/Sao_Paulo
+# Como os logs de depuração devem ser gravados ou transferidos?
+# Choices: disquete, web, sistema de arquivos montado
+d-i	save-logs/menu	select	
+# Você deseja voltar ao menu de particionamento?
+partman-ext3	partman-ext3/bad_alignment	boolean	
+# Gerenciador de Volumes Lógicos não disponível
+partman-lvm	partman-lvm/nolvm	error	
+# Como usar este espaço livre:
+# Choices: Criar uma nova partição, Particionar automaticamente o espaço livre, Exibir informações de Cilindros/Cabeças/Setores
+partman-base	partman/free_space	select	50new__________new
+# Carregar drivers que faltam a partir de uma mídia removível?
+d-i	hw-detect/load_media	boolean	false
+# Tipo de dispositivo RAID via software:
+# Choices: RAID0, RAID1, RAID5, RAID6, RAID10
+partman-md	partman-md/createmain	select	
+# Sistema de arquivos inválido para este ponto de montagem
+partman-basicfilesystems	partman-basicfilesystems/posix_filesystem_required	error	
+# Você deseja voltar ao menu de particionamento?
+partman-basicfilesystems	partman-basicfilesystems/no_swap	boolean	true
+# Voltar ao menu?
+partman-basicmethods	partman-basicmethods/method_only	boolean	
+# Usar frase secreta fraca?
+partman-crypto	partman-crypto/weak_passphrase	boolean	false
+# Gravar as mudanças no disco e configurar volumes criptografados?
+partman-crypto	partman-crypto/confirm	boolean	false
+# A chave criptográfica para  está sendo criada agora.
+partman-crypto	partman-crypto/entropy	entropy	
+# LILO configurado para usar um console serial
+lilo-installer	lilo-installer/serial-console	note	
+# for internal use; can be preseeded
+# Choices: none, safe-upgrade, full-upgrade
+pkgsel	pkgsel/upgrade	select	safe-upgrade
+# for internal use; can be preseeded
+base-installer	base-installer/install-recommends	boolean	true
+# Nenhuma partição a ser criptografada
+partman-crypto	partman-crypto/nothing_to_setup	note	
+# Informações sobre proxy FTP (deixe em branco para nenhum):
+choose-mirror-bin	mirror/ftp/proxy	string	
+# location
+# Choices: Atol Johnston, Ilhas Midway, Ilha Wake
+tzsetup-udeb	tzsetup/country/UM	select	Pacific/Midway
+# for internal use; can be preseeded
+d-i	preseed/early_command	string	
+# Nome de partição inválido
+lilo-installer	lilo-installer/manual_bootdev_error	error	
+# for internal use; can be preseeded
+d-i	debian-installer/exit/poweroff	boolean	false
+# Uso típico desta partição:
+# Choices: padrão, news, largefile, largefile4
+partman-basicfilesystems	partman-basicfilesystems/specify_usage	select	padrão
+# Erro na exclusão do grupo de volumes
+partman-lvm	partman-lvm/vgdelete_error	error	
+# Instalar o carregador de inicialização GRUB no registro mestre de inicialização?
+grub-installer	grub-installer/with_other_os	boolean	true
+# Arquitetura não suportada
+choose-mirror-bin	mirror/noarch	error	
+# Criar nova tabela de partições vazia neste dispositivo?
+partman-partitioning	partman-partitioning/confirm_new_label	boolean	false
+# Erro na execução de ''
+d-i	hw-detect/modprobe_error	error	
+# Layout do teclado:
+# Choices: 
+d-i	keyboard-configuration/variant	select	
+# Grupo de volumes a ser estendido:
+# Choices: 
+partman-lvm	partman-lvm/vgextend_names	select	
+# Localização para a nova partição:
+# Choices: Início, Fim
+partman-partitioning	partman-partitioning/new_partition_place	select	Beginning
+# Voltar ao menu e corrigir os erros?
+partman-basicfilesystems	partman-basicfilesystems/swap_check_failed	boolean	
+# Não foi possível instalar o kernel
+bootstrap-base	base-installer/kernel/no-kernels-found	error	
+# Falha ao executar comando pré-configurado
+d-i	preseed/command_failed	error	
+# Manter opções de teclado atuais no arquivo de configuração?
+d-i	keyboard-configuration/unsupported_config_options	boolean	true
+# 
+# Choices: Aruba, Belgium, Netherlands, other
+d-i	localechooser/shortlist/nl	select	
+# Falha ao obter arquivo de pré-configuração
+d-i	preseed/retrieve_error	error	
+# Partições RAID disponíveis não são o bastante
+partman-md	partman-md/notenoughparts	error	
+# Esquema de particionamento:
+# Choices: 
+partman-auto	partman-auto/choose_recipe	select	
+# Alvo para instalação do LILO:
+# Choices: : Registro Mestre de Inicialização, : nova partição Debian, Outra opção (Avançado)
+lilo-installer	lilo-installer/bootdev	select	
+# Alvo para instalação do LILO:
+lilo-installer	lilo-installer/manual_bootdev	string	
+# 
+# Choices: Cyprus, Turkey, other
+d-i	localechooser/shortlist/tr	select	
+# for internal use; can be preseeded
+d-i	debian-installer/exit/halt	boolean	false
+# Serviços a serem usados:
+# Choices: atualizações de segurança (de security.debian.org), atualizações da distribuição, software portado de versões mais novas
+apt-setup-udeb	apt-setup/services-select	multiselect	security, updates
+# Espelho do repositório Debian:
+# Choices: ftp.br.debian.org, debian.c3sl.ufpr.br, sft.if.usp.br, deb.debian.org, debian-archive.trafficmanager.net, debian.pop-sc.rnp.br, alcateia.ufscar.br, repositorio.nti.ufal.br
+choose-mirror-bin	mirror/http/mirror	select	ftp.br.debian.org
+# city
+# Choices: Kinshasa, Lubumbashi
+tzsetup-udeb	tzsetup/country/CD	select	Africa/Kinshasa
+# for internal use; can be preseeded
+disk-detect	disk-detect/dmraid/enable	boolean	false
+# Impossível instalar o GRUB em 
+grub-installer	grub-installer/grub-install-failed	error	
+# Nome do grupo de volumes conflita com nome de dispositivo
+partman-lvm	partman-lvm/vgcreate_devnameused	error	
+# location
+# Choices: Godthab, Danmarkshavn, Scoresbysund, Thule
+tzsetup-udeb	tzsetup/country/GL	select	America/Godthab
+# Nome do grupo de volumes já em uso
+partman-auto-lvm	partman-auto-lvm/vg_exists	error	
+# for internal use; can be preseeded
+d-i	preseed/run/checksum	string	
+# Usar um espelho de rede?
+apt-mirror-setup	apt-setup/use_mirror	boolean	true
+# for internal use; can be preseeded
+d-i	debian-installer/framebuffer	boolean	true
+# Erro do debootstrap
+bootstrap-base	base-installer/debootstrap/error/unknownrelsig	error	
+# Partições RAID especificadas não são o bastante
+partman-auto-raid	partman-auto-raid/notenoughparts	error	
+# for internal use; can be preseeded
+finish-install	finish-install/keep-consoles	boolean	false
+# 
+# Choices: Anguila, Antígua e Barbuda, Aruba, Bahamas, Barbados, Bermuda, Bonaire\, Saba e Santo Eustáquio, Ilhas Cayman, Cuba, Domínica, República Dominicana, Granada, Guadalupe, Haiti, Jamaica, Martinica, Montserrat, Porto Rico, São Bartolomeu, São Cristóvão e Névis, Santa Lúcia, São Martim (parte francesa), São Vicente e Granadinas, São Martim (parte holandesa), Trinidade e Tobago, Ilhas Turks e Caicos, Ilhas Virgens Britânicas, Ilhas Virgens dos Estados Unidos
+d-i	localechooser/countrylist/Caribbean	select	
+# Tamanho do volume lógico:
+partman-lvm	partman-lvm/lvcreate_size	string	
+# Insira um CD-ROM Debian
+d-i	cdrom-checker/askmount	note	
+# 
+# Choices: China, India, other
+d-i	localechooser/shortlist/bo	select	
+# Dispositivos a serem removidos do grupo de volumes:
+# Choices: 
+partman-lvm	partman-lvm/vgreduce_parts	multiselect	
+# Voltar ao menu e corrigir esse problema?
+partman-basicfilesystems	partman-basicfilesystems/boot_not_ext2	boolean	
+# Tipo de tabela de partições:
+# Choices: 
+partman-partitioning	partman-partitioning/choose_label	select	
+# for internal use; can be preseeded
+lilo-installer	lilo-installer/skip	boolean	false
+# Configurar a rede automaticamente?
+netcfg	netcfg/use_autoconfig	boolean	true
+# Entering low memory mode
+d-i	lowmem/low	note	
+# Ler outro CD ou DVD?
+apt-cdrom-setup	apt-setup/cdrom/set-failed	boolean	true
+# Não há suporte para IPv6 em links par-a-par/ponto-a-ponto
+netcfg	netcfg/no_ipv6_pointopoint	error	
+# Checar a integridade de outro CD-ROM?
+d-i	cdrom-checker/nextcd	boolean	false
+# Insira um CD-ROM de inicialização Debian
+d-i	cdrom-checker/firstcd	note	
+# Manter o layout de particionamento atual e configurar volumes criptografados?
+partman-crypto	partman-crypto/confirm_nochanges	boolean	false
+# Carregar o firmware que está faltando a partir de uma mídia removível?
+d-i	hw-detect/load_firmware	boolean	true
+# Ações de configuração iSCSI
+# Choices: Autenticar-se em alvos iSCSI, Finalizar
+partman-iscsi	partman-iscsi/mainmenu	select	
+# Nenhum alvo iSCSI descoberto
+partman-iscsi	partman-iscsi/login/no_targets	error	
+# Nome de usuário do alvo iSCSI para :
+partman-iscsi	partman-iscsi/login/incoming_username	string	
+# 
+# Choices: Ilha Bouvet, Ilhas Malvinas (Falkland), Santa Helena\, Ascensão e Tristão da Cunha, Geórgia do Sul e Ilhas Sandwich do Sul
+d-i	localechooser/countrylist/Atlantic_Ocean	select	
+# Chave liga/desliga desativada na interface 
+netcfg	netcfg/kill_switch_enabled	note	
+# location
+# Choices: Lisboa, Ilha da Madeira, Açores
+tzsetup-udeb	tzsetup/country/PT	select	Europe/Lisbon
+# Ajuda sobre o particionamento
+partman-target	partman-target/help	note	
+# Aviso do debootstrap
+bootstrap-base	base-installer/debootstrap/fallback-warning	error	
+# Ação de configuração LVM:
+# Choices: 
+partman-lvm	partman-lvm/mainmenu	select	
+# Interface primária de rede:
+# Choices: 
+netcfg	netcfg/choose_interface	select	
+# Manter o layout de teclado atual no arquivo de configuração?
+d-i	keyboard-configuration/unsupported_config_layout	boolean	true
+# Nenhum volume lógico encontrado
+partman-lvm	partman-lvm/lvdelete_nolv	error	
+# for internal use; can be preseeded
+# Choices: Network Manager, ifupdown (/etc/network/interfaces), No network configuration
+netcfg	netcfg/target_network_config	select	ifupdown
+# 
+# Choices: Antigua and Barbuda, Australia, Botswana, Canada, Hong Kong, India, Ireland, Israel, New Zealand, Nigeria, Philippines, Singapore, South Africa, United Kingdom, United States, Zambia, Zimbabwe, other
+d-i	localechooser/shortlist/en	select	
+# Arquivo de dispositivo para acessar o CD-ROM:
+d-i	cdrom-detect/cdrom_device	string	/dev/sdb1
+# for internal use; can be preseeded
+netcfg	netcfg/dhcpv6_timeout	string	15
+# Continuar com o particionamento?
+partman-partitioning	partman-partitioning/unknown_label	boolean	true
+# Nenhum dispositivo RAID via software disponível
+partman-md	partman-md/delete_no_md	error	
+# Nome de usuário para sua conta:
+user-setup-udeb	passwd/username	string	admin22
+# Falha na criação do arquivo de chave
+partman-crypto	partman-crypto/keyfile-problem	error	
+# for internal use; can be preseeded
+grub-installer	grub-installer/grub2_instead_of_grub_legacy	boolean	true
+# Gravar as mudanças nos discos e configurar LVM?
+d-i	partman-lvm/confirm_nooverwrite	boolean	false
+# Frase secreta WPA/WPA2 para o dispositivo de rede sem fio :
+netcfg	netcfg/wireless_wpa	string	
+# Gravar as mudanças nos dispositivos de armazenamento e configurar o suporte a RAID?
+d-i	partman-md/confirm_nooverwrite	boolean	false
+# for internal use; can be preseeded
+partman-auto	partman-auto/method	string	
+# Configuração LVM atual:
+partman-lvm	partman-lvm/displayall	note	
+# Não foi possível instalar o kernel selecionado
+bootstrap-base	base-installer/kernel/failed-install	error	
+# Instalar o carregador de inicialização GRUB no registro mestre de inicialização?
+grub-installer	grub-installer/only_debian	boolean	true
+# 
+# Choices: Greece, Cyprus, other
+d-i	localechooser/shortlist/el	select	
+# Tamanho inválido
+partman-partitioning	partman-partitioning/bad_new_partition_size	error	
+# city
+# Choices: Ocidental (Sumatra\, Jakarta\, Java\, Kalimantan Central e Ocidental), Central (Sulawesi\, Bali\, Nusa Tenggara\, Kalimantan do Sul e Oriental), Oriental (Maluku\, Papua)
+tzsetup-udeb	tzsetup/country/ID	select	Asia/Jakarta
+# Tipo para a nova partição:
+# Choices: Primária, Lógica
+partman-partitioning	partman-partitioning/new_partition_type	select	Primary
+# Nome de máquina do espelho do repositório Debian:
+choose-mirror-bin	mirror/http/hostname	string	ftp.br.debian.org
+# Problemas no repositório do espelho de rede
+choose-mirror-bin	mirror/bad	error	
+# Nome do grupo de volumes já em uso
+partman-lvm	partman-lvm/vgcreate_nameused	error	
+# Não foi possível gravar os logs
+d-i	save-logs/bad_directory	error	
+# 
+# Choices: Andorra, Spain, France, Italy, other
+d-i	localechooser/shortlist/ca	select	
+# for internal use only
+d-i	cdrom-detect/usb-hdd	boolean	false
+# Instalar o carregador de inicialização GRUB no dispositivo "multipath"?
+grub-installer	grub-installer/multipath	boolean	true
+# Realmente apagar os dados em ?
+partman-crypto	partman-crypto/crypto_warn_erase	boolean	false
+# Método de configuração de rede:
+# Choices: Tentar novamente a configuração automática de rede, Tentar configuração automática de rede com um "hostname" DHCP, Configurar a rede manualmente, , Não configurar a rede agora
+netcfg	netcfg/dhcp_options	select	Configure network manually
+# Programas necessários faltando
+partman-crypto	partman-crypto/tools_missing	note	
+# Diretório no qual gravar logs de depuração:
+d-i	save-logs/directory	string	/mnt
+# 
+# Choices: India, Sri Lanka, other
+d-i	localechooser/shortlist/ta	select	
+# for internal use; can be preseeded
+d-i	anna/standard_modules	boolean	true
+# location
+# Choices: McMurdo, Rothera, Palmer, Mawson, Davis, Casey, Vostok, Dumont-d'Urville, Syowa
+tzsetup-udeb	tzsetup/country/AQ	select	
+# Volume físico não existente
+partman-auto-lvm	partman-auto-lvm/no_such_pv	error	
+# Dispositivos ativos para a agrupamento RAID0:
+# Choices: 
+partman-md	partman-md/raid0devs	multiselect	
+# Como usar esta partição:
+# Choices: Sistema de arquivos com "journaling" ext4, Sistema de arquivos com "journaling" ext3, Sistema de arquivos ext2, Sistema de arquivos com "journaling" btrfs, Sistema de arquivos com "journaling" JFS, Sistema de arquivos com "journaling" XFS, Sistema de arquivos FAT16, Sistema de arquivos FAT32, Área de troca (swap), volume físico a ser criptografado, volume físico para RAID, volume físico para LVM, não usar a partição
+partman-target	partman-target/choose_method	select	25filesystem__________ext4
+# for internal use; can be preseeded
+d-i	preseed/interactive	boolean	false
+# Módulo necessário para acessar o CD-ROM:
+# Choices: 
+d-i	cdrom-detect/cdrom_module	select	none
+# zone
+# Choices: Asia/Nicosia (Cyprus (most areas)), Asia/Famagusta (Northern Cyprus)
+tzsetup-udeb	tzsetup/country/CY	select	
+# for internal use only
+d-i	debconf/language	string	pt_BR:pt:en
+# Nenhuma partição RAID disponível
+partman-md	partman-md/noparts	error	
+# location
+# Choices: Auckland, Ilhas Chatham
+tzsetup-udeb	tzsetup/country/NZ	select	Pacific/Auckland
+# Continuar a instalação sem uma partição /boot?
+partman-auto-lvm	partman-auto-lvm/no_boot	boolean	
+# Ações de configuração da criptografia
+# Choices: Criar volumes criptografados, Finalizar
+partman-crypto	partman-crypto/mainmenu	select	
+# for internal use; can be preseeded
+d-i	preseed/run	string	
+# for internal use; can be preseeded
+partman-auto	partman-auto/disk	string	
+# Tipo da rede sem fio para :
+# Choices: Rede Aberta/WEP, WPA/WPA2 PSK
+netcfg	netcfg/wireless_security_type	select	wpa
+# Continuar a instalação sem carregar módulos do kernel?
+d-i	anna/no_kernel_modules	boolean	false
+# País do espelho do repositório Debian:
+# Choices: digitar informação manualmente
+choose-mirror-bin	mirror/https/countries	select	US
+# zone
+# Choices: North-West, Pacífico, Sonora, Central, South-East
+tzsetup-udeb	tzsetup/country/MX	select	Mexico/General
+# Máscara de rede:
+netcfg	netcfg/get_netmask	string	
+# Chave WEP para o dispositivo de rede sem fio :
+netcfg	netcfg/wireless_wep	string	
+# Falha ao montar /target/proc
+grub-installer	grub-installer/mounterr	error	
+# 
+# Choices: Brasil, Portugal, outro
+d-i	localechooser/shortlist/pt_BR	select	
+# for internal use only
+choose-mirror-bin	mirror/codename	string	stretch
+# 
+# Choices: South Sudan, Jordan, United Arab Emirates, Bahrain, Algeria, Syrian Arab Republic, Saudi Arabia, Sudan, Iraq, Kuwait, Morocco, India, Yemen, Tunisia, Oman, Qatar, Lebanon, Libya, Egypt, other
+d-i	localechooser/shortlist/ar	select	
+# zone
+# Choices: Port Moresby, Bougainville
+tzsetup-udeb	tzsetup/country/PG	select	
+# Remover as partições RAID via software existentes?
+partman-md	partman-md/device_remove_md	boolean	false
+# Informação sobre proxy HTTP (deixe em branco para nenhum):
+d-i	mirror/https/proxy	string	
+# 
+# Choices: Argélia, Angola, Benin, Botsuana, Burquina, Burundi, Cabo Verde, Camarões, República Centro-Africana, Chade, Congo, Congo\, República Democrática do, Costa do Marfim, Djibuti, Egito, Guiné Equatorial, Eritréia, Etiópia, Gabão, Gâmbia, Gana, Guiné, Guiné-Bissau, Quênia, Lesoto, Libéria, Líbia, Malaui, Mali, Mauritânia, Marrocos, Moçambique, Namíbia, Níger, Nigéria, Ruanda, São Tomé e Príncipe, Senegal, Serra Leoa, Somália, África do Sul, Sudão do Sul, Sudão, Suazilândia, Tanzânia, Togo, Tunísia, Uganda, Saara Ocidental, Zâmbia, Zimbábue
+d-i	localechooser/countrylist/Africa	select	
+# Nome de usuário reservado
+user-setup-udeb	passwd/username-reserved	error	
+# for internal use; can be preseeded
+d-i	cdrom-detect/eject	boolean	true
+# Gravar as mudanças nos dispositivos de armazenamento e configurar o suporte a RAID?
+partman-md	partman-md/confirm	boolean	false
+# Método para alternância entre modos nacional e Latin:
+# Choices: Caps Lock, Alt Direito (AltGr), Control Direito, Shift Direito, Tecla Logo Direita, Tecla Menu, Alt+Shift, Control+Shift, Control+Alt, Alt+Caps Lock, Control Esquerdo+Shift Esquerdo, Alt Esquerdo, Control Esquerdo, Shift Esquerdo, Tecla Logo Esquerda, Tecla Scroll Lock, Não alternar
+d-i	keyboard-configuration/toggle	select	No toggling
+# for internal use only
+d-i	cdrom/codename	string	stretch
+# for internal use only
+bootstrap-base	base-installer/kernel/linux/initrd-2.6	boolean	true
+# Dummy template for preseeding unavailable questions
+d-i	debian-installer/dummy	string	
+# 
+# Choices: Pakistan, India, other
+d-i	localechooser/shortlist/pa	select	
+# Gravar as mudanças no disco e configurar volumes criptografados?
+d-i	partman-crypto/confirm_nooverwrite	boolean	false
+# 
+# Choices: Argentina, Bolivia, Chile, Colombia, Costa Rica, Cuba, Ecuador, El Salvador, Spain, United States, Guatemala, Honduras, Mexico, Nicaragua, Panama, Paraguay, Peru, Puerto Rico, Dominican Republic, Uruguay, Venezuela, other
+d-i	localechooser/shortlist/es	select	
+# Erro na instalação do sistema básico
+bootstrap-base	base-installer/debootstrap/error-abnormal	error	
+# for internal use only
+d-i	debconf/showold	boolean	false
+# Participar do concurso de utilização de pacotes ?
+d-i	popularity-contest/participate	boolean	false
+# Falha ao montar CD-ROM
+d-i	cdrom-checker/mntfailed	error	
+# for internal use; can be preseeded
+partman-base	partman/early_command	string	
+# Não instalando em um alvo não limpo
+base-installer	base-installer/unclean_target_cancel	error	
+# Voltar ao menu e corrigir os erros?
+partman-basicfilesystems	partman-basicfilesystems/check_failed	boolean	
+# Nome do grupo de volumes para o novo sistema:
+partman-auto-lvm	partman-auto-lvm/new_vg_name_exists	string	
+# Número de dispositivos reserva para o agrupamento RAID:
+partman-md	partman-md/raidsparecount	string	
+# Nenhum grupo de volumes encontrado
+partman-lvm	partman-lvm/vgreduce_novg	error	
+# Nome de máquina do espelho do repositório Debian:
+d-i	mirror/https/hostname	string	mirror
+# for internal use; can be preseeded
+pkgsel	pkgsel/include	string	
+# Endereço IP:
+netcfg	netcfg/get_ipaddress	string	
+# Nome de máquina DHCP:
+netcfg	netcfg/dhcp_hostname	string	
+# for internal use; can be preseeded
+d-i	preseed/include	string	
+# Configuração automática de rede falhou
+netcfg	netcfg/dhcp_failed	note	
+# for internal use; can be preseeded
+d-i	debian-installer/allow_unauthenticated_ssl	boolean	false
+# Esta informação está correta?
+netcfg	netcfg/confirm_static	boolean	true
+# Nome de domínio:
+netcfg	netcfg/get_domain	string	fleming.cecm.usp.br
+# Nenhuma interface de rede foi detectada
+netcfg	netcfg/no_interfaces	error	
+# for internal use
+d-i	keyboard-configuration/layoutcode	string	br
+# Ajustar o relógio usando NTP?
+clock-setup	clock-setup/ntp	boolean	true
+# Nenhum volume físico selecionado
+partman-lvm	partman-lvm/vgextend_nosel	error	
+# Carregar drivers de CD-ROM a partir de uma mídia removível?
+d-i	cdrom-detect/load_media	boolean	true
+# 
+# Choices: Bangladesh, India, other
+d-i	localechooser/shortlist/bn	select	
+# Translations temporarily not available
+d-i	localechooser/translation/none-yet	note	
+# for internal use only
+d-i	anna/retriever	string	cdrom-retriever
+# Falha na instalação de pacote de criptografia
+partman-crypto	partman-crypto/module_package_missing	error	
+# Falha na troca de chaves e associação
+netcfg	netcfg/wpa_supplicant_failed	note	
+# for internal use only
+d-i	debian-installer/language	string	pt_BR:pt:en
+# Endereço do portal do alvo iSCSI:
+partman-iscsi	partman-iscsi/login/address	string	
+# Gravar as mudanças nos discos e configurar LVM?
+partman-lvm	partman-lvm/confirm	boolean	false
+# Manter o layout de teclado () padrão?
+d-i	keyboard-configuration/unsupported_layout	boolean	true
+# for internal use
+d-i	keyboard-configuration/modelcode	string	pc105
+# Falha na inicialização de volume criptografado
+partman-crypto	partman-crypto/init_failed	error	
+# Habilitar senhas sombra (shadow)?
+user-setup-udeb	passwd/shadow	boolean	true
+# Não foi possível acessar o repositório
+apt-setup-udeb	apt-setup/service-failed	error	
+# Parâmetros adicionais para o módulo :
+d-i	hw-detect/retry_params	string	
+# Você têm certeza que deseja usar uma chave aleatória?
+partman-crypto	partman-crypto/use_random_for_nonswap	boolean	false
+# Grupo de volumes a ser reduzido:
+# Choices: 
+partman-lvm	partman-lvm/vgreduce_names	select	
+# Espaço livre não usável
+partman-auto	partman-auto/unusable_space	error	
+# 
+# Choices: Macedonia\, Republic of, Albania, other
+d-i	localechooser/shortlist/sq	select	
+# for internal use only
+partman-auto-raid	partman-auto-raid/raidnum	string	
+# Nenhum carregador de inicialização instalado
+nobootloader	nobootloader/confirmation_common	note	
+# Falha ao baixar componentes de criptografia
+partman-crypto	partman-crypto/install_udebs_failure	error	
+# Insufficient memory
+d-i	lowmem/insufficient	error	
+# Modelo do teclado:
+# Choices: 
+d-i	keyboard-configuration/model	select	
+# state
+# Choices: Acre, Alagoas, Amazonas, Amapá, Bahia, Ceará, Distrito Federal, Espírito Santo, Fernando de Noronha, Goiás, Maranhão, Minas Gerais, Mato Grosso do Sul, Mato Grosso, Pará, Paraíba, Pernambuco, Piauí, Paraná, Rio de Janeiro, Rio Grande do Norte, Rondônia, Roraima, Rio Grande do Sul, Santa Catarina, Sergipe, São Paulo, Tocantins
+tzsetup-udeb	tzsetup/country/BR	select	America/Sao_Paulo
+# for internal use
+d-i	keyboard-configuration/store_defaults_in_debconf_db	boolean	true
+# Forçar a instalação do GRUB para o caminho de mídia removível EFI?
+grub-installer	grub-installer/force-efi-extra-removable	boolean	false
+# Usar configuração não recomendada de / com sistema de arquivos JFS?
+partman-jfs	partman-jfs/jfs_root	boolean	false
+# for internal use; can be preseeded
+network-preseed	auto-install/enable	boolean	false
+# Erro na remoção do volume lógico
+partman-lvm	partman-lvm/lvdelete_error	error	
+# O relógio de sistema está configurado para UTC?
+clock-setup	clock-setup/utc	boolean	true
+# Ler outro CD ou DVD?
+apt-cdrom-setup	apt-setup/cdrom/set-first	boolean	false
+# Nome de máquina inválido
+netcfg	netcfg/invalid_hostname	error	
+# for internal use; can be preseeded
+partman-iscsi	partman-iscsi/login/all_targets	boolean	false
+# Shell interativo
+d-i	di-utils-shell/do-shell	note	
+# Nome de volume lógico ou de grupo de volumes inválido
+partman-lvm	partman-lvm/badnamegiven	error	
+# Falha ao excluir o dispositivo RAID via software
+partman-md	partman-md/deletefailed	error	
+# for internal use; can be preseeded
+network-preseed	auto-install/defaultroot	string	d-i/stretch/./preseed.cfg
+# Nome de máquina:
+netcfg	netcfg/get_hostname	string	fleming
+# for internal use only
+d-i	cdrom-detect/hybrid	boolean	true
+# Tamanho da chave para esta partição:
+# Choices: 
+partman-crypto	partman-crypto/keysize	select	
+# for internal use; can be preseeded
+d-i	debian-installer/country	string	BR
+# Erro durante a configuração RAID
+partman-auto-raid	partman-auto-raid/error	error	
+# for internal use; can be preseeded
+d-i	debian-installer/allow_unauthenticated	boolean	false
+# Tecla Compose:
+# Choices: Sem tecla Compose, Alt Direito (AltGr), Control Direito, Tecla Logo Direita, Tecla Menu, Tecla Logo Esquerda, Caps Lock
+d-i	keyboard-configuration/compose	select	No compose key
+# Impossível instalar 
+bootstrap-base	base-installer/kernel/failed-package-install	error	
+# Método de particionamento:
+# Choices: Assistido - usar o disco inteiro, Assistido - usar o disco inteiro e configurar LVM, Assistido - usar disco todo e LVM criptografado, Manual
+partman-auto	partman-auto/init_automatically_partition	select	80custom__________custom
+# for internal use
+bootstrap-base	base-installer/kernel/linux/initramfs-tools/driver-policy	string	most
+# Nenhum volume físico utilizável encontrado
+partman-lvm	partman-lvm/nopartitions	error	
+# Rede sem fio:
+# Choices:  Informar o ESSID manualmente
+netcfg	netcfg/wireless_show_essids	select	
+# 
+# Choices: Argentina, Bolívia, Brasil, Chile, Colômbia, Equador, Guiana Francesa, Guiana, Paraguai, Peru, Suriname, Uruguai, Venezuela
+d-i	localechooser/countrylist/South_America	select	
+# 
+# Choices: África, Antártida, Ásia, Oceano Atlântico, Caribe, América Central, Europa, Oceano Índico, América do Norte, Oceania, América do Sul, outro
+d-i	localechooser/continentlist	select	
+# Gravar as mudanças anteriores em disco e continuar?
+partman-partitioning	partman-partitioning/confirm_resize	boolean	
+# Erro
+netcfg	netcfg/error	error	
+# for internal use; can be preseeded
+bootstrap-base	base-installer/debootstrap_script	string	
+# Diretório do repositório Debian no espelho de rede:
+d-i	mirror/https/directory	string	/debian/
+# Ler outro CD ou DVD?
+apt-cdrom-setup	apt-setup/cdrom/set-next	boolean	false
+# A instalação do GRUB falhou
+grub-installer	grub-installer/apt-install-failed	error	
+# Número de dispositivos ativos para o agrupamento RAID:
+partman-md	partman-md/raiddevcount	string	
+# Instalar GRUB?
+grub-installer	grub-installer/grub_not_mature_on_this_platform	boolean	false
+# Language:
+# Choices: C${!TAB}-${!TAB}No localization, Albanian${!TAB}-${!TAB}Shqip, Arabic${!TAB}-${!TAB}عربي, Asturian${!TAB}-${!TAB}Asturianu, Basque${!TAB}-${!TAB}Euskara, Belarusian${!TAB}-${!TAB}Беларуская, Bosnian${!TAB}-${!TAB}Bosanski, Bulgarian${!TAB}-${!TAB}Български, Catalan${!TAB}-${!TAB}Català, Chinese (Simplified)${!TAB}-${!TAB}中文(简体), Chinese (Traditional)${!TAB}-${!TAB}中文(繁體), Croatian${!TAB}-${!TAB}Hrvatski, Czech${!TAB}-${!TAB}Čeština, Danish${!TAB}-${!TAB}Dansk, Dutch${!TAB}-${!TAB}Nederlands, English${!TAB}-${!TAB}English, Esperanto${!TAB}-${!TAB}Esperanto, Estonian${!TAB}-${!TAB}Eesti, Finnish${!TAB}-${!TAB}Suomi, French${!TAB}-${!TAB}Français, Galician${!TAB}-${!TAB}Galego, German${!TAB}-${!TAB}Deutsch, Greek${!TAB}-${!TAB}Ελληνικά, Hebrew${!TAB}-${!TAB}עברית, Hungarian${!TAB}-${!TAB}Magyar, Icelandic${!TAB}-${!TAB}Íslenska, Indonesian${!TAB}-${!TAB}Bahasa Indonesia, Irish${!TAB}-${!TAB}Gaeilge, Italian${!TAB}-${!TAB}Italiano, Japanese${!TAB}-${!TAB}日本語, Kazakh${!TAB}-${!TAB}Қазақ, Korean${!TAB}-${!TAB}한국어, Kurdish${!TAB}-${!TAB}Kurdî, Latvian${!TAB}-${!TAB}Latviski, Lithuanian${!TAB}-${!TAB}Lietuviškai, Macedonian${!TAB}-${!TAB}Македонски, Northern Sami${!TAB}-${!TAB}Sámegillii, Norwegian Bokmaal${!TAB}-${!TAB}Norsk bokmål, Norwegian Nynorsk${!TAB}-${!TAB}Norsk nynorsk, Persian${!TAB}-${!TAB}فارسی, Polish${!TAB}-${!TAB}Polski, Portuguese${!TAB}-${!TAB}Português, Portuguese (Brazil)${!TAB}-${!TAB}Português do Brasil, Romanian${!TAB}-${!TAB}Română, Russian${!TAB}-${!TAB}Русский, Serbian (Cyrillic)${!TAB}-${!TAB}Српски, Slovak${!TAB}-${!TAB}Slovenčina, Slovenian${!TAB}-${!TAB}Slovenščina, Spanish${!TAB}-${!TAB}Español, Swedish${!TAB}-${!TAB}Svenska, Tagalog${!TAB}-${!TAB}Tagalog, Tajik${!TAB}-${!TAB}Тоҷикӣ, Thai${!TAB}-${!TAB}ภาษาไทย, Turkish${!TAB}-${!TAB}Türkçe, Ukrainian${!TAB}-${!TAB}Українська, Uyghur${!TAB}-${!TAB}ئۇيغۇرچە, Vietnamese${!TAB}-${!TAB}Tiếng Việt, Welsh${!TAB}-${!TAB}Cymraeg
+d-i	localechooser/languagelist	select	pt_BR
+# for internal use only
+clock-setup	clock-setup/system-time-changed	boolean	true
+# ESSID inválido
+netcfg	netcfg/invalid_essid	error	
+# for internal use; can be preseeded
+bootstrap-base	base-installer/excludes	string	
+# A instalação do LILO falhou
+lilo-installer	lilo-installer/failed	error	
+# Não há suporte para o gerador initrd
+bootstrap-base	base-installer/initramfs/unsupported	error	
+# Kernel a ser instalado:
+# Choices: linux-image-4.9.0-9-amd64,linux-image-amd64, nenhum
+bootstrap-base	base-installer/kernel/image	select	linux-image-amd64
+# for internal use only
+bootstrap-base	base-installer/kernel/linux/link_in_boot	boolean	false
+# Escrever as mudanças nos discos?
+partman-base	partman/confirm	boolean	false
+# for internal use; can be preseeded
+grub-installer	grub-installer/make_active	boolean	true
+# Voltar ao menu e corrigir esse problema?
+partman-ext3	partman/boot_not_first_partition	boolean	
+# Área de troca insegura detectada
+partman-crypto	partman-crypto/unsafe_swap	error	
+# Incapaz de remover dados LVM automaticamente
+partman-lvm	partman-lvm/device_remove_lvm_span	error	
+# for internal use; can be preseeded
+bootstrap-base	base-installer/includes	string	
+# for internal use only
+d-i	debian-installer/consoledisplay	string	console-setup
+# Continuar sem um espelho de rede?
+apt-mirror-setup	apt-setup/no_mirror	boolean	false
+# for internal use; can be preseeded
+partman-auto-raid	partman-auto-raid/recipe	string	
+# location
+# Choices: Guaiaquil, Galápagos
+tzsetup-udeb	tzsetup/country/EC	select	America/Guayaquil
+# Iniciar serviços de cartões PC?
+d-i	hw-detect/start_pcmcia	boolean	true
+# Habilitar repositórios fonte no APT?
+apt-setup-udeb	apt-setup/enable-source-repositories	boolean	true
+# Grupo de volumes:
+# Choices: 
+partman-lvm	partman-lvm/lvcreate_vgnames	select	
+# Versão do Debian a ser instalada:
+# Choices: stretch${!TAB}-${!TAB}stable
+choose-mirror-bin	mirror/suite	select	stable
+# Gateway inalcançável
+netcfg	netcfg/gateway_unreachable	error	
+# 
+# Choices: Canadá, México, São Pedro e Miquelon, Estados Unidos
+d-i	localechooser/countrylist/North_America	select	
+# Erro ao informar a senha
+grub-installer	grub-installer/password-mismatch	error	
+# for internal use; can be preseeded
+d-i	preseed/include/checksum	string	
+# Nenhum sistema de arquivos raiz
+partman-target	partman-target/no_root	error	
+# Nome do grupo de volumes para o novo sistema:
+partman-auto-lvm	partman-auto-lvm/new_vg_name	string	
+# Forçar a instalação UEFI?
+partman-efi	partman-efi/non_efi_system	boolean	
+# Flags para a nova partição:
+# Choices: 
+partman-partitioning	partman-partitioning/set_flags	multiselect	
+# for internal use only
+d-i	debian-installer/exit/always_halt	boolean	false
+# for internal use; can be preseeded
+bootstrap-base	base-installer/kernel/linux/extra-packages	string	
+# zone
+# Choices: Moscou-01 - Kaliningrado, Moscou+00 - Moscou, Moscou+01 - Samara, Moscou+02 - Yekaterimburgo, Moscou+03 - Omsk, Moscou+04 - Krasnoyarsk, Moscou+05 - Irkutsk, Moscou+06 - Yakutsk, Moscou+07 - Vladivostok, Moscou+08 - Magadan
+tzsetup-udeb	tzsetup/country/RU	select	Europe/Moscow
+# for internal use only
+d-i	debconf/translations-dropped	boolean	false
+# Ler outro CD ou DVD?
+apt-cdrom-setup	apt-setup/cdrom/set-double	boolean	true
+# location
+# Choices: Madrid, Ceuta, Ilhas Canárias
+tzsetup-udeb	tzsetup/country/ES	select	Europe/Madrid
+# Erro do debootstrap
+bootstrap-base	base-installer/debootstrap/error/couldntdl	error	
+# for internal use; can be preseeded
+# Choices: cylinder, minimal, optimal
+partman-base	partman/alignment	select	optimal
+# Não há suporte para uso do sistema de arquivos btrfs no /boot
+partman-btrfs	partman-btrfs/btrfs_boot	error	
+# for internal use; can be preseeded (deprecated)
+netcfg	netcfg/disable_dhcp	boolean	false
+# Nenhum grupo de volumes encontrado
+partman-lvm	partman-lvm/vgextend_novg	error	
+# Tipo de chave criptográfica para esta partição:
+# Choices: 
+partman-crypto	partman-crypto/keytype	select	
+# A operação de redimensionamento é impossível
+partman-partitioning	partman-partitioning/impossible_resize	error	
+# Componentes do instalador a serem carregados:
+# Choices: 
+d-i	anna/choose_modules_lowmem	multiselect	
+# Endereço IP malformado
+netcfg	netcfg/bad_ipaddress	error	
+# CD-ROM incorreto detectado
+d-i	cdrom-detect/wrong-cd	error	
+# for internal use only
+user-setup-udeb	passwd/user-uid	string	
+# Espelho do repositório Debian:
+# Choices: 
+d-i	mirror/https/mirror	select	
+# Falha ao abrir arquivo checksum
+d-i	cdrom-checker/md5file_failed	error	
+# Configurações da partição:
+# Choices: Usar como:${!TAB}Sistema de arquivos com "journaling" ext4, , Ponto de montagem:${!TAB}/srv, Opções de montagem:${!TAB}defaults, Rótulo:${!TAB}wiki, Blocos reservados:${!TAB}5%, Uso típico:${!TAB}padrão, Flag inicializável:${!TAB}desligado, , Excluir a partição, Finalizar a configuração da partição
+partman-base	partman/active_partition	select	99finish__________finished
+# O tamanho informado é inválido
+partman-partitioning	partman-partitioning/bad_new_size	error	
+# for internal use; can be preseeded
+bootstrap-base	base-installer/kernel/linux/extra-packages-2.6	string	
+# Voltar ao menu e continuar o particionamento?
+partman-efi	partman-efi/no_efi	boolean	
+# Ponto de montagem para esta partição:
+# Choices: / - o sistema de arquivos raiz, /boot - arquivos estáticos do carregador de inicialização, /home - diretório pessoal dos usuários, /tmp - arquivos temporários, /usr - dados estáticos, /var - dados variáveis, /srv - dados de serviços fornecidos por este sistema, /opt - pacotes de softwares de aplicações adicionais, /usr/local - hierarquia local, Informar manualmente, Não montar
+partman-basicfilesystems	partman-basicfilesystems/mountpoint	select	/srv - data for services provided by this system
+# Falha ao particionar o disco selecionado
+partman-auto	partman-auto/no_recipe	error	
+# Manter o layout de particionamento atual e configurar LVM?
+partman-lvm	partman-lvm/confirm_nochanges	boolean	false
+# Você pretende usar FireWire Ethernet?
+ethdetect	ethdetect/use_firewire_ethernet	boolean	false
+# Aguardar outros 30 segundos para que o "hwclock" ajuste o relógio?
+clock-setup	clock-setup/hwclock-wait	boolean	false
+# for internal use only
+d-i	cdrom-detect/cdrom_fs	string	iso9660
+# for internal use; can be preseeded
+d-i	preseed/file/checksum	string	
+# Usar Control+Alt+Backspace para terminar o servidor X?
+d-i	keyboard-configuration/ctrl_alt_bksp	boolean	false
+# Voltar ao menu e corrigir esse problema?
+partman-ext3	partman-ext3/boot_not_ext2_or_ext3	boolean	
+# Erro do debootstrap
+bootstrap-base	base-installer/debootstrap/error/nogetrel	error	
+# Esta é uma visão geral de suas partições e pontos de montagem atualmente configurados. Selecione uma partição para modificar suas configurações (sistema de arquivos, ponto de montagem, etc), um espaço livre onde criar partições ou um dispositivo no qual inicializar uma tabela de partições.
+# Choices: Particionamento assistido, Configurar RAID via software, Configurar o Gerenciador de Volumes Lógicos, Configurar volumes criptografados, Configurar volumes iSCSI, , SCSI1 (0\,0\,0) (sda) - 250.1 GB ATA ST3250310AS,    ${!TAB}${!ALIGN=RIGHT}#1${!TAB}primária${!TAB}${!ALIGN=RIGHT}26.8 GB${!TAB}B${!TAB}F${!TAB}ext4${!TAB}${!TAB}/${!TAB},    ${!TAB}${!ALIGN=RIGHT}#2${!TAB}primária${!TAB}${!ALIGN=RIGHT}3.2 GB${!TAB}${!TAB}F${!TAB}swap${!TAB}${!TAB}swap${!TAB},    ${!TAB}${!ALIGN=RIGHT}#3${!TAB}primária${!TAB}${!ALIGN=RIGHT}150.0 GB${!TAB}${!TAB}f${!TAB}ext4${!TAB}${!TAB}/home${!TAB},    ${!TAB}${!ALIGN=RIGHT}#4${!TAB}primária${!TAB}${!ALIGN=RIGHT}70.0 GB${!TAB}${!TAB}f${!TAB}ext4${!TAB}${!TAB}/srv${!TAB}, SCSI3 (0\,0\,0) (sdb) - 3.9 GB Kingston DT 101 G2, , Desfazer as mudanças nas partições, Finalizar o particionamento e escrever as mudanças no disco
+partman-base	partman/choose_partition	select	90finish__________finish
+# Servidor NTP a ser usado:
+clock-setup	clock-setup/ntp-server	string	0.debian.pool.ntp.org
+# Nenhuma mídia particionável
+disk-detect	disk-detect/cannot_find	error	
+# zone
+# Choices: Oriental, Central, Montanha, Pacífico, Alasca, Havaí, Arizona, Indiana Oriental, Samoa
+tzsetup-udeb	tzsetup/country/US	select	US/Eastern
+# for internal use; can be preseeded
+partman-auto	partman-auto/expert_recipe_file	string	
+# for internal use; can be preseeded
+netcfg	netcfg/dhcp_timeout	string	25
+# Nome de usuário do iniciador iSCSI para :
+partman-iscsi	partman-iscsi/login/username	string	
+# O espaço livre inicia em  e finaliza em .
+partman-base	partman/show_free_chs	note	
+# Não é um CD-ROM Debian válido
+d-i	cdrom-checker/wrongcd	error	
+# Ignorar perguntas com uma prioridade menor que:
+# Choices: crítica, alta, média, baixa
+d-i	debconf/priority	select	high
+# Erro na criação de um novo volume lógico
+partman-lvm	partman-lvm/lvcreate_error	error	
+# Novo tamanho de partição:
+partman-partitioning	partman-partitioning/new_size	string	some number
+# Voltar e tentar um espelho diferente?
+choose-mirror-bin	mirror/no-default	boolean	true
+# Definindo variáveis de firmware para inicialização automática
+nobootloader	nobootloader/confirmation_powerpc_pasemi	note	
+# Falha ao montar /target/proc
+nobootloader	nobootloader/mounterr	error	
+# Opções da faixa de recursos PCMCIA:
+d-i	hw-detect/pcmcia_resources	string	
+# for internal use; can be preseeded
+d-i	preseed/boot_command	string	
+# Nenhum volume físico definido no grupo de volumes
+partman-auto-lvm	partman-auto-lvm/no_pv_in_vg	error	
+# Módulos a serem carregados:
+# Choices: 
+d-i	hw-detect/select_modules	multiselect	
+# Tempo de espera para detecção da conexão de rede inválido
+netcfg	netcfg/bad_link_wait_timeout	error	
+# Senha em branco
+user-setup-udeb	user-setup/password-empty	error	
+# Permitir login como root?
+user-setup-udeb	passwd/root-login	boolean	true
+# Nenhum volume físico selecionado
+partman-lvm	partman-lvm/vgreduce_nosel	error	
+# Configuração LVM falhou
+partman-lvm	partman-lvm/commit_failed	error	
+# Nome da partição:
+partman-partitioning	partman-partitioning/set_name	string	
+# Instalação completada
+finish-install	finish-install/reboot_in_progress	note	
+# city
+# Choices: Ulaanbaatar, Hovd, Choibalsan
+tzsetup-udeb	tzsetup/country/MN	select	Asia/Ulaanbaatar

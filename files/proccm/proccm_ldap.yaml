@@ -1,0 +1,14 @@
+
+
+- name: Install LDAP
+  ansible.builtin.apt:
+    state: present
+    name:
+      - slapd
+      - ldap-utils
+      - ldapscripts
+      - libpam-cracklib
+      - gnutls-bin
+      - ssl-cert
+      - libnss-ldapd
+

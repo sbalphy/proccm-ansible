@@ -1,0 +1,6 @@
+dn: cn=<group>,<gsuffix>,<suffix>
+objectClass: posixGroup
+objectClass: top
+cn: <group>
+userPassword:: e2NyeXB0fXg=
+gidNumber: <gid>

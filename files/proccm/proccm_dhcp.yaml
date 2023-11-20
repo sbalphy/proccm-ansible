@@ -1,5 +1,6 @@
 # ref util: https://help.ubuntu.com/community/isc-dhcp-server
 
+# todo: mudar pra network manager? https://docs.ansible.com/ansible/latest/collections/community/general/nmcli_module.html
 
 # responsável por atribuir IPs a clientes que não tenham ip estático.
 # Por exemplo, algum aluno que traga o seu laptop e queira se ligar 

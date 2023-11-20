@@ -29,9 +29,9 @@
 - name: Fresh client install
   hosts: localhost
   vars:
-    mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress }}" # pegar mac address do pc atual
+    mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress | upper }}" # pegar mac address do pc atual
     nome_pc: "{{ input_name | default(mac2hostname[mac]) }}" # inventory hostname vai dar algo como localhost, por isso extrair nome pelo mac address
-    venv: "venv_archinstall"
+    venv: "/tmp/venv_archinstall"
 
   pre_tasks:
     - name: Mkdirs no mnt pra dar mount
@@ -66,8 +66,18 @@
         - { path: "/mnt/archinstall/scratch", src: "/dev/sda3" }
 
   tasks:
-    # TODO: checar se sistema vai estar com os requirements de: pip, virtualenv, setuptools
-    - name: Instalar archinstall
+    - name: Instalar requirements pra instalar archinstall com pip
+      become: true
+      # package pra tentar ser mais iso agnostico
+      ansible.builtin.package:
+        state: present
+        name:
+          - pkgconf
+          - python-virtualenv
+          - python-setuptools
+          - python-pip
+
+    - name: Instalar archinstall com pip
       become: true
       ansible.builtin.pip:
         name: archinstall
