@@ -17,6 +17,7 @@
     extra_args: --break-system-packages
 
 - name: Setar tempo ntp coisas TODO
+  become: true
   ansible.builtin.service:
     name: "systemd-timesyncd.service"
     state: started
