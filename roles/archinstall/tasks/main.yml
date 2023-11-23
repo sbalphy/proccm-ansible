@@ -7,24 +7,16 @@
     state: present
     name: 
       - pkgconf
+      - arch-install-scripts # archinstall depende do pacstrap
       - "python{{ versao }}-virtualenv" # apt packages poem um 3 na frente de python, sabe se la pq quando 2.7 ta deprecado fazem anos 
       - "python{{ versao }}-setuptools"
       - "python{{ versao }}-pip"
 
-- name: Clonar archinstall na versao q queremos
-  become: true
-  ansible.builtin.git:
-    repo: 'https://github.com/archlinux/archinstall.git'
-    dest: "{{ archinstall_path }}"
-    version: 'f16af43949085b06478d2e4c45ed61fa8e595171' # Commit logo dps de darem merge no fix pra pre-mounted diskconfig (commit 30a374a do PR#2221)
-    # https://github.com/archlinux/archinstall/tree/f16af43949085b06478d2e4c45ed61fa8e595171
+- name: Setar tempo ntp coisas TODO
+  ansible.builtin.service:
+    name: "systemd-timesyncd.service"
+    state: started
 
-# todo: checar se isso instala soh o q ta no repo ou vai dar um pull e zuar a versao
-- name: Instalar archinstall a partir do repo clonado
-  become: true
-  ansible.builtin.pip:
-    name: "git+file://{{ archinstall_path }}"
-    virtualenv: "{{ venv_path }}"
 
   # input_name e input_numeral devem ser passados pela CLI com a flag -e, --extra-vars "input_name=DrAbobrinha input_numeral=42"
   # Caso nome inserido ja exista, atualiza mac address dele no inventorio (aka pc quebrou tamo trocando por outro e reaproveitando o hostname)
@@ -55,7 +47,7 @@
 - name: Run archinstall with our client settings
   become: true
   changed_when: true
-  ansible.builtin.command: "{{ venv_path }}/bin/archinstall --config {{ config_path }} --creds {{ credentials }} --silent"
+  ansible.builtin.command: "archinstall --config {{ config_path }} --creds {{ credentials }} --silent"
   vars:
     config_path: "/tmp/configuration.json"
     credentials: "/tmp/credentials.json"
