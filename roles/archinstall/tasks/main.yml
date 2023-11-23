@@ -8,9 +8,6 @@
     name: 
       - pkgconf
       - arch-install-scripts # archinstall depende do pacstrap
-      - "python-virtualenv" # apt packages poem um 3 na frente de python, sabe se la pq quando 2.7 ta deprecado fazem anos 
-      - "python-setuptools"
-      - "python-pip"
 
 - name: Instalar archinstall
   become: true
