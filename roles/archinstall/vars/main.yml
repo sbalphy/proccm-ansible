@@ -1,7 +1,4 @@
 ---
 # vars file for archinstall
-archinstall_path: "/tmp/archinstall/"
 mac: "{{ hostvars[inventory_hostname].ansible_default_ipv4.macaddress | upper }}" # pegar mac address do pc atual
 nome_pc: "{{ input_name | default(mac2hostname[mac]) }}" # inventory hostname vai dar algo como localhost, por isso extrair nome pelo mac address
-venv_path: "/tmp/venv"
-versao: "{{ '3' if ansible_facts['os_family'] == 'Debian' else '' }}"

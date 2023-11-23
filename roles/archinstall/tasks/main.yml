@@ -8,9 +8,16 @@
     name: 
       - pkgconf
       - arch-install-scripts # archinstall depende do pacstrap
-      - "python{{ versao }}-virtualenv" # apt packages poem um 3 na frente de python, sabe se la pq quando 2.7 ta deprecado fazem anos 
-      - "python{{ versao }}-setuptools"
-      - "python{{ versao }}-pip"
+      - "python-virtualenv" # apt packages poem um 3 na frente de python, sabe se la pq quando 2.7 ta deprecado fazem anos 
+      - "python-setuptools"
+      - "python-pip"
+
+- name: Instalar archinstall
+  become: true
+  ansible.builtin.pip:
+    state: present
+    name: archinstall
+    extra_args: --break-system-packages
 
 - name: Setar tempo ntp coisas TODO
   ansible.builtin.service:
