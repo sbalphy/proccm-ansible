@@ -8,6 +8,7 @@
     name: 
       - pkgconf
       - arch-install-scripts # archinstall depende do pacstrap
+      - python-pip
 
 - name: Instalar archinstall
   become: true
