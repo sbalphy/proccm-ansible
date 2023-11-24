@@ -3,6 +3,8 @@
 # por meio de tag, pode ser que pra ter internet vc precise
 # subir os ip a a vlan manualmente
 
+# se voltarmos a ter 2 interfaces fisicas: falar com sti pra configurar portas do switcch e
+# fazer algo como um arp/ ip neigh pra descobrir qual interface eh qual de maneira programatica
 
 - name: Install vlan support
   ansible.builtin.apt:

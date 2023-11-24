@@ -3,5 +3,5 @@
 
   roles:
     - read_client_vars
-    - partition_mbr
+    - partition
     - archinstall

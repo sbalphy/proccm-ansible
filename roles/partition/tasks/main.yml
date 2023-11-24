@@ -41,6 +41,7 @@
     state: present
     device: /dev/sda
     number: "{{ item.number }}"
+    flags: "{{ item.flags }}"
     fs_type: "{{ item.fs }}"
     part_start: "{{ item.part_start }}"
     part_end: "{{ item.part_end }}"
