@@ -3,6 +3,9 @@
 ; gateway                 ansible_host=143.107.79.65
 ; impressora              ansible_host=143.107.90.4
 
+[chroot_path]
+/mnt/archinstall
+
 # IPS externos como ansible_host
 [servidores]
 proccm                  ansible_host=143.107.79.66          ansible_port=14641   ldap_port=12421  ip_externo=143.107.79.66  ip_interno=192.168.0.127 numeral=127
