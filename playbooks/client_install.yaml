@@ -1,4 +1,5 @@
-- hosts: localhost
+- name: Install arch
+  hosts: localhost
   roles:
     - read_client_vars
     - partition
@@ -21,20 +22,21 @@
 # -E, --preserve-env:
 # Indicates to the security policy that the user wishes to preserve their existing environment variables. 
 # The security policy may return an error if the user does not have permission to preserve the environment.
-- hosts: chroot_path
+- name: Config client
+  hosts: chroot_path
   connection: community.general.chroot
   vars:
     porta_ldap: hostvars["proccm"].ldap_port
   roles:
-    - pacman
+    - pacman_conf
     - hosts
     - install_utilities
-    - ip
+    - ip_fixo
     - nfs
     - ldap
     - pam
     - role: cups
-      vars: 
-        impressora_ip: "143.107.90.4" 
+      vars:
+        impressora_ip: "143.107.90.4"
     - role: ssh_keys
       tags: cp_ssh_keys
