@@ -5,19 +5,19 @@
     - archinstall
 
 
-- hosts: proccm
-  vars:
-    root_path: /mnt/archinstall
-  tasks:
-    - name: Copiar CA cert do proccm para o localhost
-      become: true
-      ansible.builtin.fetch:
-        src: /etc/ssl/certs/cacert.pem
-        dest: "{{ root_path }}/etc/ssl/certs/ca.cert"
-        flat: true
+# - hosts: proccm
+#   vars:
+#     root_path: groups["chroot_path"][0]
+#   tasks:
+#     - name: Copiar CA cert do proccm para o localhost
+#       become: true
+#       ansible.builtin.fetch:
+#         src: /etc/ssl/certs/cacert.pem
+#         dest: "{{ root_path }}/etc/ssl/certs/ca.cert"
+#         flat: true
 
 
-# rodar playbook com `sudo -E` pra preservar env pro chroot (?) #todo checar de eh necessario
+# rodar playbook com `sudo -E` pra preservar env pro chroot (?) #todo checar se eh necessario
 # -E, --preserve-env:
 # Indicates to the security policy that the user wishes to preserve their existing environment variables. 
 # The security policy may return an error if the user does not have permission to preserve the environment.
