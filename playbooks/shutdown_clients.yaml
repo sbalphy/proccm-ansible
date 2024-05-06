@@ -1,0 +1,10 @@
+- name: shut everyone down in 15s
+  hosts: clientes
+  become: yes
+
+  tasks:
+    - name: shut us down
+      community.general.shutdown:
+        delay: 15
+
+
