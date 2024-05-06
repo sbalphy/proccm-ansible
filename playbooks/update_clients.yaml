@@ -1,0 +1,12 @@
+- name: update pacman packages
+  hosts: clientes
+  become: yes
+
+  tasks:
+    - name: update system via -Syu
+    # vamos ver se só isso já funciona cru
+    # o meu script para updates manuais faz -Sy archlinux-keyring antes do -Syu
+      community.general.pacman:
+        update_cache: true
+        upgrade: true
+
