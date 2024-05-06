@@ -3,9 +3,12 @@
   become: yes
 
   tasks:
+    - name: update keyring to prevent signing errors
+      community.general.pacman:
+        name: archlinux-keyring
+        state: latest
+        update_cache: true
     - name: update system via -Syu
-    # vamos ver se só isso já funciona cru
-    # o meu script para updates manuais faz -Sy archlinux-keyring antes do -Syu
       community.general.pacman:
         update_cache: true
         upgrade: true
