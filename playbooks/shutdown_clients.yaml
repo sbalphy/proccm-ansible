@@ -1,4 +1,4 @@
-- name: shut everyone down in 15s
+- name: shut everyone down in 60s
   hosts: clientes
   become: yes
 
