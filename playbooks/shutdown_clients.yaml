@@ -5,6 +5,6 @@
   tasks:
     - name: shut us down
       community.general.shutdown:
-        delay: 15
+        delay: 60
 
 
